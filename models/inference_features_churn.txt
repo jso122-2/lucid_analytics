@@ -1,0 +1,7 @@
+Engagement_Score_Change
+Payment_Stability
+Subscription_Loyalty
+Customer_Tenure
+Last_Engagement_Days
+Review_Count
+Social_Media_Engagement
