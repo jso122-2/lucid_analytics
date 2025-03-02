@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+{% block title %}Churn Analysis{% endblock %}
+{% block content %}
+<div class="model-content">
+  <h1>Churn Analysis</h1>
+  
+  <!-- Descriptive text block -->
+  <p class="model-description">
+    Our Churn Analysis model predicts customer attrition by analyzing historical data and identifying patterns that indicate potential churn. By understanding these patterns, businesses can proactively implement retention strategies, personalize customer engagement, and reduce churn rates effectively.
+  </p>
+
+  <!-- Churn Form -->
+  <form id="churn-form" action="{{ url_for('churn.predict_churn') }}" method="post">
+    <div>
+      <label for="Customer_Tenure">Customer Tenure:</label>
+      <input type="range" id="Customer_Tenure" name="Customer_Tenure" min="0" max="100" value="50"
+             oninput="document.getElementById('Customer_TenureOut').value = this.value">
+      <output id="Customer_TenureOut">50</output>
+    </div>
+    
+    <div>
+      <label for="Last_Engagement_Days">Last Engagement Days:</label>
+      <input type="range" id="Last_Engagement_Days" name="Last_Engagement_Days" min="0" max="365" value="30"
+             oninput="document.getElementById('Last_Engagement_DaysOut').value = this.value">
+      <output id="Last_Engagement_DaysOut">30</output>
+    </div>
+    
+    <div>
+      <label for="Total_Interactions">Total Interactions:</label>
+      <input type="range" id="Total_Interactions" name="Total_Interactions" min="0" max="1000" value="500"
+             oninput="document.getElementById('Total_InteractionsOut').value = this.value">
+      <output id="Total_InteractionsOut">500</output>
+    </div>
+    
+    <div>
+      <label for="Time_Spent_per_Session">Time Spent per Session:</label>
+      <input type="range" id="Time_Spent_per_Session" name="Time_Spent_per_Session" min="0" max="100" value="30"
+             oninput="document.getElementById('Time_Spent_per_SessionOut').value = this.value">
+      <output id="Time_Spent_per_SessionOut">30</output>
+    </div>
+
+    <div style="text-align:center; margin-top:20px;">
+      <button class="action-button" type="submit">Predict Churn</button>
+      <button class="action-button" type="button" id="randomize-btn">Randomize Values</button>
+    </div>
+  </form>
+
+  <!-- Big block result container for returned percentages/inference values -->
+  <div id="churn-prediction-result"></div>
+
+  <!-- Funnel Chart Section -->
+  <div class="graph-section" id="funnel-chart-container">
+    <h2>Churn Funnel Chart</h2>
+    <div id="funnel-chart-content"></div>
+  </div>
+
+  <!-- Survival Curve Section -->
+  <div class="graph-section" id="survival-curve-container">
+    <h2>Time-to-Churn Survival Curve</h2>
+    <img id="survival-img" src="" alt="Survival Curve">
+  </div>
+</div>
+
+<!-- Modal for click-to-expand logic -->
+<div id="modal">
+  <span id="modal-close">&times;</span>
+  <div id="modal-content">
+    <img id="modal-img" src="" alt="Expanded Graph" />
+  </div>
+</div>
+
+<script>
+  // Randomize button logic
+  document.getElementById('randomize-btn').addEventListener('click', function() {
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    let ct = getRandomInt(0, 100);
+    let led = getRandomInt(0, 365);
+    let ti = getRandomInt(0, 1000);
+    let tsp = getRandomInt(0, 100);
+
+    document.getElementById('Customer_Tenure').value = ct;
+    document.getElementById('Customer_TenureOut').value = ct;
+
+    document.getElementById('Last_Engagement_Days').value = led;
+    document.getElementById('Last_Engagement_DaysOut').value = led;
+
+    document.getElementById('Total_Interactions').value = ti;
+    document.getElementById('Total_InteractionsOut').value = ti;
+
+    document.getElementById('Time_Spent_per_Session').value = tsp;
+    document.getElementById('Time_Spent_per_SessionOut').value = tsp;
+  });
+
+  // Attach click-to-expand logic for funnel chart & survival curve images
+  function addExpandListener(imgElement) {
+    if (!imgElement) return;
+    imgElement.addEventListener('click', function() {
+      document.getElementById('modal-img').src = this.src;
+      document.getElementById('modal').style.display = "block";
+    });
+  }
+  function attachExpandListeners() {
+    const funnelImg = document.getElementById('funnel-img');
+    const survivalImg = document.getElementById('survival-img');
+    addExpandListener(funnelImg);
+    addExpandListener(survivalImg);
+  }
+
+  // Modal close logic
+  document.getElementById('modal-close').addEventListener('click', function() {
+    document.getElementById('modal').style.display = "none";
+  });
+  window.addEventListener('click', function(event) {
+    if (event.target === document.getElementById('modal')) {
+      document.getElementById('modal').style.display = "none";
+    }
+  });
+
+  // Poll the Celery task status
+  function pollStatus(taskId) {
+    fetch(`/churn/status/${taskId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.state === 'PENDING' || data.state === 'STARTED') {
+          setTimeout(() => pollStatus(taskId), 2000);
+        } else if (data.state === 'SUCCESS') {
+          if (data.result && data.result.predicted_percentage) {
+            let predicted = data.result.predicted_percentage;
+            document.getElementById('churn-prediction-result').innerHTML =
+              `<p>Predicted Churn Percentage: ${predicted}</p>`;
+
+            // Generate the funnel chart with an ID for click-to-expand
+            let fd = new FormData();
+            fd.append("predicted_percentage", predicted);
+            fetch('{{ url_for("churn.generate_funnel_from_prediction") }}', {
+              method: 'POST',
+              body: fd
+            })
+            .then(response => response.json())
+            .then(funnelData => {
+              if (funnelData.error) {
+                document.getElementById('funnel-chart-content').innerHTML =
+                  `<p>Error generating funnel: ${funnelData.error}</p>`;
+              } else {
+                // Provide an ID for the funnel image to attach the click event
+                document.getElementById('funnel-chart-content').innerHTML =
+                  `<img id="funnel-img" src="data:image/png;base64,${funnelData.funnel_chart}" alt="Churn Funnel Chart" />`;
+                // Re-attach expand listeners now that the funnel image is in the DOM
+                attachExpandListeners();
+              }
+            })
+            .catch(error => {
+              console.error('Error generating funnel:', error);
+              document.getElementById('funnel-chart-content').innerHTML = `<p>Error: ${error}</p>`;
+            });
+
+            // Generate the survival curve using derived survival data
+            if (data.result.survival_data) {
+              let formData = new FormData();
+              formData.append("survival_data", JSON.stringify(data.result.survival_data));
+              fetch('/churn/generate_survival_curve', {
+                method: 'POST',
+                body: formData
+              })
+              .then(response => response.blob())
+              .then(blob => {
+                const url = URL.createObjectURL(blob);
+                document.getElementById('survival-img').src = url;
+                // Re-attach expand listeners after the survival image is updated
+                attachExpandListeners();
+              })
+              .catch(error => {
+                console.error('Error generating survival curve:', error);
+                document.getElementById('survival-curve-container').innerHTML = "<p>Error generating survival curve.</p>";
+              });
+            } else {
+              document.getElementById('survival-curve-container').innerHTML =
+                "<p>Error: Derived survival data not provided.</p>";
+            }
+          } else {
+            document.getElementById('churn-prediction-result').innerHTML =
+              `<p>Error: ${data.error || 'No result returned'}</p>`;
+          }
+        } else {
+          document.getElementById('churn-prediction-result').innerHTML =
+            `<p>Status: ${data.state} - ${data.status}</p>`;
+        }
+      })
+      .catch(error => console.error('Polling error:', error));
+  }
+
+  // On form submit
+  document.getElementById('churn-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    fetch('{{ url_for("churn.predict_churn") }}', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.error) {
+        document.getElementById('churn-prediction-result').innerHTML = `<p>Error: ${data.error}</p>`;
+      } else if (data.id) {
+        pollStatus(data.id);
+      } else {
+        document.getElementById('churn-prediction-result').innerHTML = `<p>Unexpected response</p>`;
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('churn-prediction-result').innerHTML = `<p>Error: ${error}</p>`;
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,3 @@
+Test MAE: 110632.1749
+Test RMSE: 248983.4014
+R-Squared: 0.9801

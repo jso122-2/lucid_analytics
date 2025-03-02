@@ -1,0 +1,148 @@
+2025-02-24 21:40:28,555 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 13:40:42,919 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 21:40:43,414 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmpt5bc2mbn.
+2025-02-24 21:40:43,424 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpiulonbpb.
+2025-02-24 21:40:43,451 - my_app - ERROR - Unable to download models/churn_cox_model.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-24 21:40:53,364 - my_app - ERROR - Unable to download models/churn_cox_model.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-25 13:42:41,549 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 21:42:41,978 - my_app - ERROR - Unable to download models/churn_cox_model.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-24 21:42:42,013 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmpzohpnmry.
+2025-02-24 21:42:42,024 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpa5wh8c0q.
+2025-02-24 21:42:42,065 - my_app - ERROR - Unable to download models/churn_cox_model.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-24 21:42:50,117 - my_app - ERROR - Unable to download models/churn_cox_model.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-25 13:44:16,849 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 21:44:17,379 - my_app - ERROR - Unable to download models/churn_cox_model.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-24 21:44:19,989 - my_app - ERROR - Unable to download models/churn_cox_model.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-24 21:44:43,442 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 13:45:08,627 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 21:45:09,024 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmp2fewu414.
+2025-02-24 21:45:09,033 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmp7aezzmvh.
+2025-02-24 21:45:09,057 - my_app - ERROR - Unable to download models/churn_cox_model.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-24 21:49:23,755 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 13:49:37,143 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 21:49:37,491 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmp86t56ha_.
+2025-02-24 21:49:37,502 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmp5liw6xbx.
+2025-02-24 21:49:38,383 - my_app - INFO - Downloaded models/inference_features.txt from MinIO to temporary file /tmp/tmpyujesh0h.
+2025-02-24 21:53:44,219 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 13:53:58,048 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 21:53:58,398 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmpa4vwqc7d.
+2025-02-24 21:53:58,409 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpcxrulk6l.
+2025-02-25 13:56:32,380 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 21:56:48,355 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 13:56:57,476 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 21:56:57,869 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmpbr016x9o.
+2025-02-24 21:56:57,879 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpa1y_4eh_.
+2025-02-24 21:56:58,780 - my_app - INFO - Downloaded models/inference_features.txt from MinIO to temporary file /tmp/tmpcp9vegao.
+2025-02-24 22:09:23,852 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 14:09:38,473 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 22:09:38,862 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmpscyeempn.
+2025-02-24 22:09:38,874 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmp9iiwula3.
+2025-02-24 22:09:38,898 - my_app - ERROR - Unable to download models/churn_cox_model_20250225_132154.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-24 22:11:41,699 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 14:11:54,699 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 22:11:55,053 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmpwzzbyciz.
+2025-02-24 22:11:55,064 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmp43f5l6vp.
+2025-02-24 22:11:55,086 - my_app - ERROR - Unable to download models/churn_cox_model_20250225_132154.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-24 22:14:03,794 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 14:14:17,710 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 22:14:18,120 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmp6wv4zl7t.
+2025-02-24 22:14:18,132 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmp0p12t1l3.
+2025-02-24 22:14:18,159 - my_app - ERROR - Unable to download models/churn_cox_model_20250225_132154.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-24 22:16:20,965 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 14:16:39,595 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 22:16:39,930 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmp3gfb3h3l.
+2025-02-24 22:16:39,939 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmptfvsj7lq.
+2025-02-24 22:16:39,962 - my_app - ERROR - Unable to download models/churn_cox_model_20250225_132154.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-24 22:29:15,832 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 14:55:37,867 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 22:55:38,288 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmp0hkgdvqm.
+2025-02-24 22:55:38,298 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpew2mo_eu.
+2025-02-24 22:55:38,326 - my_app - ERROR - Unable to download models/churn_cox_model_20250225_132154.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-24 22:59:56,930 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 15:00:12,671 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 23:00:13,021 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmp7aicc9kw.
+2025-02-24 23:00:13,031 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmp9wcxxr42.
+2025-02-24 23:00:13,945 - my_app - INFO - Downloaded models/inference_features.txt from MinIO to temporary file /tmp/tmppi0mhz_7.
+2025-02-24 23:04:19,339 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 15:04:39,997 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 23:04:40,381 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmp4kkeug8f.
+2025-02-24 23:04:40,393 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmp4kl7hudo.
+2025-02-24 23:04:41,063 - my_app - INFO - Downloaded models/inference_features.txt from MinIO to temporary file /tmp/tmprzw7t56h.
+2025-02-24 23:27:15,840 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-24 23:29:00,933 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-24 23:29:30,436 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-24 23:40:08,479 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 15:40:19,641 - my_app - INFO - BUCKET_NAME from env: models
+2025-02-24 23:40:20,045 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmp7qdgdtt4.
+2025-02-24 23:40:20,055 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmps5aqdmjn.
+2025-02-24 23:40:21,079 - my_app - INFO - Downloaded models/inference_features_churn.txt from MinIO to temporary file /tmp/tmpw0f94lln.
+2025-02-24 23:49:57,163 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-24 23:49:57,380 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmpq2_m8t6a.
+2025-02-24 23:49:57,389 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpq0i_l2pl.
+2025-02-24 23:49:58,176 - my_app - INFO - Downloaded models/inference_features_churn.txt from MinIO to temporary file /tmp/tmpqxc0yl_d.
+2025-02-25 00:02:30,471 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 00:02:30,731 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmpb29oqvoz.
+2025-02-25 00:02:30,741 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpjwtlo9je.
+2025-02-25 00:05:32,149 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 00:05:32,387 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmp2tw6h6ww.
+2025-02-25 00:05:32,396 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpf4ibf4jz.
+2025-02-25 00:16:16,860 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 00:16:17,174 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmpamwzlwz2.
+2025-02-25 00:16:17,184 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpd_3kgoc5.
+2025-02-25 00:19:11,113 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 00:19:11,330 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmpazq5k7q5.
+2025-02-25 00:19:11,339 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpqb50auar.
+2025-02-25 00:28:33,415 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 00:28:33,661 - my_app - INFO - Downloaded models/churn_model_20250220_182726.pkl from MinIO to temporary file /tmp/tmp_hlahlty.
+2025-02-25 00:28:33,670 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpc4p9vfm2.
+2025-02-25 00:38:27,312 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 00:38:27,535 - my_app - INFO - Downloaded models/churn_model_20250225_163303.pkl from MinIO to temporary file /tmp/tmpe4dpjlxe.
+2025-02-25 00:38:27,544 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpwr273ws8.
+2025-02-25 00:45:52,954 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 00:45:53,211 - my_app - INFO - Downloaded models/churn_model_20250225_164345.pkl from MinIO to temporary file /tmp/tmph_es85r7.
+2025-02-25 00:45:53,221 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpgfbfioy5.
+2025-02-25 00:50:19,040 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 00:50:19,290 - my_app - INFO - Downloaded models/churn_model_20250225_164345.pkl from MinIO to temporary file /tmp/tmp9jf32dxc.
+2025-02-25 00:50:19,300 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpq0_xe6d_.
+2025-02-25 01:02:25,131 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 01:02:25,372 - my_app - INFO - Downloaded models/churn_model_20250225_164345.pkl from MinIO to temporary file /tmp/tmpvm0q2v07.
+2025-02-25 01:02:25,381 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpg3krso9s.
+2025-02-25 01:05:54,039 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 01:05:54,272 - my_app - INFO - Downloaded models/churn_model_20250225_164345.pkl from MinIO to temporary file /tmp/tmpweeojnni.
+2025-02-25 01:05:54,282 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmp504lwd03.
+2025-02-25 01:24:42,464 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 01:24:42,723 - my_app - INFO - Downloaded models/churn_model_20250225_164345.pkl from MinIO to temporary file /tmp/tmpl5qnyfa3.
+2025-02-25 01:24:42,735 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpvyqlw0o9.
+2025-02-25 01:30:14,690 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 01:30:14,870 - my_app - INFO - Downloaded models/churn_model_20250225_164345.pkl from MinIO to temporary file /tmp/tmp5usrgd25.
+2025-02-25 01:30:14,881 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmp9bczrmye.
+2025-02-25 01:34:14,315 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 01:34:14,547 - my_app - INFO - Downloaded models/churn_model_20250225_173227.pkl from MinIO to temporary file /tmp/tmp_1qs1d0p.
+2025-02-25 01:34:14,556 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmp_hbfugg0.
+2025-02-25 02:19:25,905 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 02:19:26,196 - my_app - ERROR - Unable to download models/churn_model_20250225_175647.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-25 02:20:09,621 - my_app - ERROR - Unable to download models/churn_model_20250225_175647.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-25 02:20:35,480 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 02:20:35,736 - my_app - ERROR - Unable to download models/churn_model_20250225_175647.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-25 02:23:22,158 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 02:23:22,400 - my_app - ERROR - Unable to download models/churn_model_20250225_175647.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-25 02:26:49,128 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 02:26:49,293 - my_app - ERROR - Unable to download models/churn_model_20250225_175647.pkl from bucket marketing.models: An error occurred (404) when calling the HeadObject operation: Not Found
+2025-02-25 02:30:34,723 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 02:30:34,943 - my_app - INFO - Downloaded models/churn_model_20250225_175647.pkl from MinIO to temporary file /tmp/tmp5bp1a_zp.
+2025-02-25 02:30:34,953 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpc9unsfcl.
+2025-02-25 02:37:06,256 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 02:37:06,476 - my_app - INFO - Downloaded models/churn_model_20250225_175647.pkl from MinIO to temporary file /tmp/tmp_p1q0hmv.
+2025-02-25 02:37:06,486 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmp6hy6pzgw.
+2025-02-25 02:41:35,160 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-25 02:41:35,382 - my_app - INFO - Downloaded models/churn_model_20250225_175647.pkl from MinIO to temporary file /tmp/tmpe2xxtupx.
+2025-02-25 02:41:35,392 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpm8_szzi0.
+2025-02-26 03:06:37,192 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-26 03:06:37,665 - my_app - INFO - Downloaded models/churn_model_20250225_175647.pkl from MinIO to temporary file /tmp/tmphaqxtzu8.
+2025-02-26 03:06:37,678 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpnqg393sr.
+2025-02-26 23:26:57,881 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-02-26 23:26:58,165 - my_app - INFO - Downloaded models/churn_model_20250225_175647.pkl from MinIO to temporary file /tmp/tmp9wrdk8xp.
+2025-02-26 23:26:58,176 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmp91jm468k.
+2025-03-01 02:44:43,745 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-03-01 02:44:44,387 - my_app - INFO - Downloaded models/churn_model_20250225_175647.pkl from MinIO to temporary file /tmp/tmpanroumta.
+2025-03-01 02:44:44,401 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmp_do08sfr.

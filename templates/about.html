@@ -1,0 +1,317 @@
+{% extends "base.html" %}
+{% block title %}About & Graphing{% endblock %}
+{% block content %}
+<style>
+  .about-content {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 40px;
+    background: transparent; /* Inherit global grey background */
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+  .about-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .about-content h3 {
+    font-size: 1.8rem;
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+  .about-content p {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+  }
+  /* Training Graphs Section */
+  .training-graphs {
+    margin: 40px 0;
+    text-align: center;
+  }
+  .training-graphs h3 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  .graph-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .training-graph {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .training-graph img {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+  }
+  .tooltip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 10px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .training-graph:hover .tooltip {
+    opacity: 1;
+  }
+  /* Model Performance Section */
+  .model-performance {
+    margin: 40px 0;
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2); /* Subtle background separation */
+    border-radius: 8px;
+  }
+  .performance-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 20px auto 0;
+  }
+  .performance-card {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: left;
+  }
+  .performance-card h4 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  .performance-card p {
+    font-size: 1.1rem;
+    margin: 5px 0;
+  }
+  /* Model Evaluation Section */
+  .model-evaluation {
+    margin: 40px 0;
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2); /* Similar subtle background */
+    border-radius: 8px;
+  }
+  .evaluation-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 20px auto 0;
+  }
+  .evaluation-card {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: left;
+  }
+  .evaluation-card h4 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  .evaluation-card p {
+    font-size: 1.1rem;
+    margin: 5px 0;
+  }
+  /* Modal for Image Expansion */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+  }
+  .modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+  }
+  .modal-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #fff;
+    color: #000;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-weight: bold;
+  }
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .graph-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="about-content">
+  <h2>About Lucid Analytics</h2>
+  <p>Lucid Analytics thrives on precision and delivers real-time, predictive marketing insights so you can make informed decisions before issues arise.</p>
+  <p>Marketing thrives on precision, but most analytics tools operate in hindsight. I built this platform to change that—delivering real-time, predictive insights so marketers can make informed decisions before issues arise.</p>
+  <p>This isn’t just another tool that aggregates data into a dashboard. It’s the result of months of testing, training, and refining machine learning models on real-world marketing data. Our goal is to create a system that understands the complexities of customer behavior, media performance, and brand sentiment—and predicts outcomes with accuracy.</p>
+  
+  <h3>How I Built It</h3>
+  <p>I started with real marketing datasets from platforms like Kaggle—datasets filled with customer behaviors, purchase trends, ad performance metrics, and loyalty indicators. I performed extensive exploratory data analysis to identify patterns, clean inconsistencies, and remove noise. This careful preprocessing ensured our models learned from accurate, meaningful information.</p>
+  <p>Next, I trained and tested multiple machine learning algorithms, refining them continuously to improve accuracy. For churn prediction, I focused on behavioral trends such as customer engagement, purchase history, and interaction patterns. For NPS scoring, I modeled sentiment shifts using past survey responses and customer touchpoints. For media effectiveness, I evaluated the direct impact of ad spend, identifying which investments truly drive conversions.</p>
+  
+  <!-- Training Graphs Section -->
+  <div class="training-graphs">
+    <h3>Training Graphs</h3>
+    <div class="graph-grid">
+      <div class="training-graph">
+        <img src="{{ url_for('static', filename='assets/eda_pairplot_selected_features.png') }}" alt="Pairplot of Key Transformed Features">
+        <div class="tooltip">This pairplot visualizes relationships between key features, helping identify correlations and preprocessing effectiveness.</div>
+      </div>
+      <div class="training-graph">
+        <img src="{{ url_for('static', filename='assets/eda_pca_projection.png') }}" alt="PCA Projection of Numeric Features">
+        <div class="tooltip">This PCA projection reduces high-dimensional marketing data into two principal components, making it easier to analyze patterns.</div>
+      </div>
+      <div class="training-graph">
+        <img src="{{ url_for('static', filename='assets/eda_boxplots_metrics.png') }}" alt="Boxplots of Model Metrics">
+        <div class="tooltip">Boxplots show the distribution of model performance metrics, helping validate consistency and reliability.</div>
+      </div>
+      <div class="training-graph">
+        <img src="{{ url_for('static', filename='assets/eda_fast_correlation_scatter.png') }}" alt="Feature Correlation Scatter Matrix">
+        <div class="tooltip">This scatter matrix displays correlations between marketing features, ensuring models focus on independent, meaningful variables.</div>
+      </div>
+      <div class="training-graph">
+        <img src="{{ url_for('static', filename='assets/media_shap_dependence_log_Spend.png') }}" alt="SHAP Dependence Plot for Media Model (log_Spend)">
+        <div class="tooltip">SHAP analysis reveals how media spend impacts ROI, highlighting nonlinear relationships and key decision drivers.</div>
+      </div>
+      <div class="training-graph">
+        <img src="{{ url_for('static', filename='assets/media_shap_summary.png') }}" alt="SHAP Summary for Media Model">
+        <div class="tooltip">This SHAP summary plot illustrates the most influential features in media effectiveness predictions.</div>
+      </div>
+    </div>
+  </div>
+  
+  <h3>Overcoming Challenges & Continuous Improvement</h3>
+  <p>Building predictive models isn’t simple. I encountered challenges such as overfitting and misinterpreted signals, which required constant troubleshooting and iteration. By fine-tuning our models and refining our input features, I improved accuracy. Once deployed, our system continuously updates with new data, ensuring predictions remain relevant as consumer behavior evolves.</p>
+  
+  <h3>What This Means for Marketers</h3>
+  <p>Our platform empowers marketers to launch smarter campaigns, identify at-risk customers early, and gain deeper insights into their brand’s performance. It’s not just a collection of numbers—it’s a real-time marketing intelligence tool built to drive data-driven decision-making.</p>
+  
+  <div class="model-performance">
+    <h3>Model Performance & Accuracy</h3>
+    <p>Our models have been rigorously tested to deliver reliable predictions. Below are key performance metrics:</p>
+    <div class="performance-cards">
+      
+      <!-- Churn Model Performance -->
+      <div class="performance-card">
+        <h4>Churn Model Performance</h4>
+        <p><strong>Test RMSE: 0.846</strong></p>
+        <p>This means our churn model predicts with an average error of 0.84 units.</p>
+        <p><strong>F1 Score: 0.80</strong></p>
+        <p>A balanced measure of precision and recall.</p>
+      </div>
+      
+      <!-- Media Model Performance -->
+      <div class="performance-card">
+        <h4>Media Model Performance</h4>
+        <p><strong>R-Squared: 0.9801</strong></p>
+        <p>A near-perfect score showing our media spend model explains 98% of the variations in ROI.</p>
+        <p><strong>MAE: 0.75</strong></p>
+        <p>This indicates that on average, predictions deviate by 0.75 units.</p>
+      </div>
+      
+    <!-- NPS Model Performance -->
+    <div class="performance-card">
+      <h4>NPS Model Performance</h4>
+      <p><strong>RMSE: 0.77</strong></p>
+      <p>Measures prediction errors for NPS classifications, with lower values indicating more accurate sentiment categorization.</p>
+      <p><strong>F1 Score: 0.70</strong></p>
+      <p>Combines precision and recall, ensuring reliable classification across the NPS categories (Promoter, Passive, Detractor).</p>
+    </div>
+
+      
+    </div>
+  </div>
+  
+
+<!-- Modal for Image Expansion -->
+<div id="image-modal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" id="modal-close">&times;</button>
+    <img id="modal-img" src="" alt="Expanded Graph">
+  </div>
+</div>
+
+<script>
+  // Image Expansion Functionality
+  const modal = document.getElementById("image-modal");
+  const modalImg = document.getElementById("modal-img");
+  const modalClose = document.getElementById("modal-close");
+  
+  // Add click event listener to all training graph images
+  document.querySelectorAll(".training-graph img").forEach(img => {
+    img.addEventListener("click", () => {
+      modal.style.display = "flex";
+      modalImg.src = img.src;
+    });
+  });
+  
+  // Close modal when clicking the close button or outside the image
+  modalClose.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+  
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+  
+  // Smooth scroll for anchor links
+  document.addEventListener('click', function(e) {
+    if (e.target.matches('a[href^="#"]')) {
+      e.preventDefault();
+      const target = document.querySelector(e.target.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  });
+  
+  // Navbar shrink and parallax effect
+  window.addEventListener('scroll', function() {
+    const navbar = document.getElementById('navbar');
+    if (window.scrollY > 50) {
+      navbar.classList.add('shrink');
+    } else {
+      navbar.classList.remove('shrink');
+    }
+  });
+  
+  // Fade-in animation for content using GSAP
+  window.addEventListener('load', function() {
+    gsap.from('.about-content h2', { duration: 1, opacity: 0, y: -50 });
+  });
+</script>
+{% endblock %}

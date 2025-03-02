@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Update title here -->
+    <title>{% block title %}Lucid Analytics{% endblock %}</title>
+    <!-- Update meta tags if applicable -->
+    <meta name="description" content="Lucid Analytics provides clear, actionable marketing insights." />
+    <!-- Update logo reference if you have an image -->
+    <!-- For example, if your logo is referenced as below, change the image filename -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+    {% block extra_styles %}
+    <style>
+      /* WebGL container style for the Skeleton Model */
+      #webgl-container {
+         width: 100%;
+         height: 400px;
+         background-color: #000;
+      }
+    </style>
+    {% endblock %}
+    <style>
+      /* Global Background and Typography */
+      body {
+        background-color: #808080; /* Global grey background */
+        color: #fff;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+      
+      /* Responsive Navbar Styles */
+      .navbar {
+        background-color: #333;
+        padding: 10px 20px;
+        position: relative;
+      }
+      .navbar-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .logo {
+        font-size: 1.5rem;
+        color: #fff;
+      }
+      .nav-menu {
+        list-style: none;
+        display: flex;
+        margin: 0 auto; /* Center the navigation menu */
+        padding: 0;
+      }
+      .nav-menu li {
+        position: relative;
+      }
+      .nav-menu li a {
+        display: block;
+        padding: 10px 15px;
+        color: #fff;
+        text-decoration: none;
+        transition: background 0.3s ease;
+      }
+      .nav-menu li a:hover {
+        background-color: #444;
+      }
+      /* Dropdown submenu styling (if needed) */
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #444;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        min-width: 150px;
+        z-index: 100;
+      }
+      .dropdown-menu li a {
+        padding: 10px;
+      }
+      /* Show dropdown on hover for desktop */
+      .nav-menu li.dropdown:hover .dropdown-menu {
+        display: block;
+      }
+      /* Hamburger menu for mobile */
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+      }
+      .hamburger span {
+        height: 3px;
+        width: 25px;
+        background: #fff;
+        margin-bottom: 4px;
+        border-radius: 3px;
+        transition: all 0.3s ease;
+      }
+      
+      /* Media Queries for responsiveness */
+      @media screen and (max-width: 768px) {
+        .nav-menu {
+          flex-direction: column;
+          width: 100%;
+          display: none;
+          background-color: #333;
+        }
+        .nav-menu.active {
+          display: flex;
+        }
+        .nav-menu li {
+          width: 100%;
+        }
+        .nav-menu li a {
+          padding: 15px;
+          border-top: 1px solid #444;
+        }
+        .dropdown-menu {
+          position: static;
+        }
+        .hamburger {
+          display: flex;
+        }
+        /* Disable hover-based dropdowns on touch devices */
+        .nav-menu li.dropdown:hover .dropdown-menu {
+          display: none;
+        }
+      }
+      
+      /* Optional: Navbar shrink on scroll */
+      .navbar.full-navbar.shrink {
+        /* Additional shrink styles if needed */
+      }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+      <nav class="navbar full-navbar">
+         <div class="navbar-container">
+            <div class="logo">MySite</div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="{{ url_for('index') }}">Home</a></li>
+                <li class="nav-item"><a href="{{ url_for('churn.churn') }}">Churn Analysis</a></li>
+                <li class="nav-item"><a href="{{ url_for('nps.nps') }}">NPS Analysis</a></li>
+                <li class="nav-item"><a href="{{ url_for('media.media_home') }}">Media Analysis</a></li>
+                <!-- Example dropdown:
+                <li class="nav-item dropdown">
+                    <a href="#">More</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Option 1</a></li>
+                        <li><a href="#">Option 2</a></li>
+                    </ul>
+                </li>
+                -->
+            </ul>
+            <div class="hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+         </div>
+      </nav>
+    </header>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+    <!-- Include the updated navbar.js script -->
+    <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

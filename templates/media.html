@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block title %}Media Model Inference{% endblock %}
+{% block content %}
+<div class="model-content">
+  <h1>Media Model Inference</h1>
+  
+  <!-- Descriptive text block -->
+  <p class="model-description">
+    Our Media Analysis model assesses the effectiveness of marketing campaigns across various channels. By analyzing performance metrics, it identifies high-impact strategies, forecasts ROI, and guides budget allocation to maximize marketing efficiency.
+  </p>
+  
+  <form id="media-form">
+    <div>
+      <label for="ad_spend">Ad Spend:</label>
+      <input type="range" id="ad_spend" name="ad_spend" min="0" max="10000" step="0.01" value="5000"
+        oninput="document.getElementById('ad_spendOutput').value = this.value" />
+      <output id="ad_spendOutput">5000</output>
+    </div>
+    <div>
+      <label for="optimal_spend">Optimal Spend (for ROI curve):</label>
+      <input type="range" id="optimal_spend" name="optimal_spend" min="0" max="10000" step="1" value="500"
+        oninput="document.getElementById('optimal_spendOutput').value = this.value" />
+      <output id="optimal_spendOutput">500</output>
+    </div>
+    <div>
+      <label for="impressions">Impressions:</label>
+      <input type="range" id="impressions" name="impressions" min="1000" max="20000" step="1" value="10000"
+        oninput="document.getElementById('impressionsOutput').value = this.value" />
+      <output id="impressionsOutput">10000</output>
+    </div>
+    <div>
+      <label for="engagement">Engagement:</label>
+      <input type="range" id="engagement" name="engagement" min="0" max="1000" step="1" value="300"
+        oninput="document.getElementById('engagementOutput').value = this.value" />
+      <output id="engagementOutput">300</output>
+    </div>
+    <div>
+      <label for="interactions">Interactions:</label>
+      <input type="range" id="interactions" name="interactions" min="10" max="500" step="1" value="150"
+        oninput="document.getElementById('interactionsOutput').value = this.value" />
+      <output id="interactionsOutput">150</output>
+    </div>
+    <div>
+      <label for="predicted_impressions">Predicted Impressions:</label>
+      <input type="range" id="predicted_impressions" name="predicted_impressions" min="0" max="20000" step="1" value="5200"
+        oninput="document.getElementById('predicted_impressionsOutput').value = this.value" />
+      <output id="predicted_impressionsOutput">5200</output>
+    </div>
+    <div>
+      <label for="predicted_engagement">Predicted Engagement:</label>
+      <input type="range" id="predicted_engagement" name="predicted_engagement" min="0" max="1000" step="1" value="350"
+        oninput="document.getElementById('predicted_engagementOutput').value = this.value" />
+      <output id="predicted_engagementOutput">350</output>
+    </div>
+    <div>
+      <label for="predicted_interactions">Predicted Interactions:</label>
+      <input type="range" id="predicted_interactions" name="predicted_interactions" min="0" max="500" step="1" value="180"
+        oninput="document.getElementById('predicted_interactionsOutput').value = this.value" />
+      <output id="predicted_interactionsOutput">180</output>
+    </div>
+    <div style="text-align:center; margin-top:20px;">
+      <button class="action-button" type="button" onclick="updateMediaGraphs()">Update Media Graphs</button>
+      <button class="action-button" type="button" id="randomize-btn">Randomize Values</button>
+    </div>
+  </form>
+  
+  <!-- Big block result container for returned percentages/inference values -->
+  <div id="churn-prediction-result"></div>
+  
+  <div class="graph-container">
+    <h2>Spend vs. ROI Curve</h2>
+    <img id="spend-roi-img" src="" alt="Spend vs. ROI Curve" />
+  </div>
+  
+  <div class="graph-container">
+    <h2>Impressions vs. Engagement Bubble Chart</h2>
+    <img id="impressions-engagement-img" src="" alt="Impressions vs. Engagement Bubble Chart" />
+  </div>
+</div>
+
+<!-- Modal for graph expansion -->
+<div id="modal">
+  <span id="modal-close">&times;</span>
+  <div id="modal-content">
+    <img id="modal-img" src="" alt="Expanded Graph" />
+  </div>
+</div>
+
+<script>
+  // Function to update graphs by building URLs for PNG endpoints.
+  function updateMediaGraphs(predictionResult) {
+    const ad_spend = document.getElementById('ad_spend').value;
+    let optimal_spend, max_roi, k;
+    if (predictionResult) {
+      optimal_spend = predictionResult.optimal_spend;
+      max_roi = predictionResult.max_roi;
+      k = predictionResult.k;
+    } else {
+      optimal_spend = document.getElementById('optimal_spend').value;
+      max_roi = 3.0;
+      k = 0.005;
+    }
+    const roiUrl = `/media/spend_vs_roi?ad_spend=${ad_spend}&optimal_spend=${optimal_spend}&max_roi=${max_roi}&k=${k}`;
+    document.getElementById('spend-roi-img').src = roiUrl;
+  
+    const impressions = document.getElementById('impressions').value;
+    const engagement = document.getElementById('engagement').value;
+    const interactions = document.getElementById('interactions').value;
+    const predicted_impressions = document.getElementById('predicted_impressions').value;
+    const predicted_engagement = document.getElementById('predicted_engagement').value;
+    const predicted_interactions = document.getElementById('predicted_interactions').value;
+    const ieUrl = `/media/impressions_vs_engagement?impressions=${impressions}` +
+                  `&engagement=${engagement}&interactions=${interactions}` +
+                  `&predicted_impressions=${predicted_impressions}` +
+                  `&predicted_engagement=${predicted_engagement}` +
+                  `&predicted_interactions=${predicted_interactions}`;
+    document.getElementById('impressions-engagement-img').src = ieUrl;
+  
+    const predictedValue = "$" + (parseFloat(ad_spend) * 1.5).toFixed(2);
+    document.getElementById('churn-prediction-result').innerHTML = predictedValue;
+  }
+  
+  document.getElementById('randomize-btn').addEventListener("click", function () {
+    function getRandomValue(min, max, step = 1) {
+      const precision = step.toString().split(".")[1] ? step.toString().split(".")[1].length : 0;
+      return parseFloat((Math.random() * (max - min) + min).toFixed(precision));
+    }
+    document.getElementById("ad_spend").value = getRandomValue(0, 10000, 0.01);
+    document.getElementById("ad_spendOutput").value = document.getElementById("ad_spend").value;
+    document.getElementById("impressions").value = getRandomValue(1000, 20000, 1);
+    document.getElementById("impressionsOutput").value = document.getElementById("impressions").value;
+    document.getElementById("optimal_spend").value = getRandomValue(0, 10000, 1);
+    document.getElementById("optimal_spendOutput").value = document.getElementById("optimal_spend").value;
+    document.getElementById("engagement").value = getRandomValue(0, 1000, 1);
+    document.getElementById("engagementOutput").value = document.getElementById("engagement").value;
+    document.getElementById("interactions").value = getRandomValue(10, 500, 1);
+    document.getElementById("interactionsOutput").value = document.getElementById("interactions").value;
+    document.getElementById("predicted_impressions").value = getRandomValue(0, 20000, 1);
+    document.getElementById("predicted_impressionsOutput").value = document.getElementById("predicted_impressions").value;
+    document.getElementById("predicted_engagement").value = getRandomValue(0, 1000, 1);
+    document.getElementById("predicted_engagementOutput").value = document.getElementById("predicted_engagement").value;
+    document.getElementById("predicted_interactions").value = getRandomValue(0, 500, 1);
+    document.getElementById("predicted_interactionsOutput").value = document.getElementById("predicted_interactions").value;
+  });
+  
+  function addExpandListener(imgElement) {
+    imgElement.addEventListener('click', function() {
+      document.getElementById('modal-img').src = this.src;
+      document.getElementById('modal').style.display = "block";
+    });
+  }
+  function attachExpandListeners() {
+    addExpandListener(document.getElementById('spend-roi-img'));
+    addExpandListener(document.getElementById('impressions-engagement-img'));
+  }
+  attachExpandListeners();
+  
+  document.getElementById('modal-close').addEventListener('click', function() {
+    document.getElementById('modal').style.display = "none";
+  });
+  window.addEventListener('click', function(event) {
+    if (event.target == document.getElementById('modal')) {
+      document.getElementById('modal').style.display = "none";
+    }
+  });
+</script>
+{% endblock %}

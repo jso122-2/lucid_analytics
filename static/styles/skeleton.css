@@ -1,0 +1,15 @@
+html, body {
+    margin: 0; 
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  #webgl-container {
+    position: relative;       /* critical for absolute positioning of children */
+    width: 100%;             /* or 100vw for full width */
+    height: 100vh;           /* fill entire browser height, or a large enough fixed height */
+    background-color: transparent;
+    border: 2px dashed red;  /* temporary debug border */
+  }
+  

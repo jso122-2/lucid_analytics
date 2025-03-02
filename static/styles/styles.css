@@ -1,0 +1,152 @@
+/* Global model page styling */
+body {
+    background-color: #f5f5f5;  /* Light grey background for improved contrast */
+    color: #333;              /* Dark text for readability */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+    margin: 0;
+    padding: 0;
+}
+
+/* Shared Model Content Container */
+.model-content {
+    padding: 40px;
+    margin: 40px auto;
+    max-width: 1000px;
+    color: #fff;
+    background: transparent;
+}
+
+/* Shared Heading styling */
+.model-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.7);
+}
+
+/* Shared descriptive text style */
+.model-content p.model-description {
+    font-size: 1.2rem;
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    padding: 0 20px;
+}
+
+/* Shared label styling */
+.model-content label {
+    font-size: 1.1rem;
+    color: #fff;
+    display: block;
+    margin-top: 10px;
+}
+
+/* Shared output styling */
+.model-content output {
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Shared range input styling */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 5px;
+    background: #D3D3D3;
+    outline: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #000;
+    border-radius: 50%;
+    cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #000;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Shared action button styling */
+.action-button {
+    padding: 10px 20px;
+    margin: 10px;
+    background: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.action-button:hover {
+    background: #333;
+}
+
+/* Percentage output box style (from Churn page) */
+#churn-prediction-result {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 40px 0;
+    background: #222;
+    padding: 20px;
+}
+
+/* Shared graph section styling (from NPS page) */
+.graph-section {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+.graph-section h2 {
+    margin-bottom: 10px;
+}
+.graph-section img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+/* Shared modal styling for graph expansion */
+#modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+}
+#modal-content {
+    margin: 5% auto;
+    display: block;
+    max-width: 90%;
+}
+#modal-content img {
+    width: 100%;
+    height: auto;
+}
+#modal-close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}

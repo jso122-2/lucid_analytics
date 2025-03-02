@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>My Web App Landing Page</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <!-- CSS files -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/skeleton.css') }}" />
+
+    <!-- Inject the MinIO base URL -->
+    <script>
+      window.MINIO_BASE_URL = "{{ minio_base_url }}";
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+
+    <style>
+      /* Global Base: unified background, font, and text color */
+      body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100%;
+        overflow-x: hidden;
+        font-family: Arial, sans-serif;
+        background: #808080;  /* Global grey background */
+        color: #000000;  /* Solid black text for enhanced readability */
+        line-height: 1.6;
+        transition: background 0.5s ease, color 0.5s ease;
+      }
+      body.dark-mode {
+        background: #121212;
+        color: #e0e0e0;
+      }
+      /* Navbar: centered nav links with uniform styling */
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 90px;
+        background: #333;  /* Consistent dark background */
+        display: flex;
+        align-items: center;
+        justify-content: center;  /* Center the navigation list */
+        padding: 0 20px;
+        z-index: 1000;
+        transition: height 0.3s ease, background 0.5s ease;
+      }
+      .navbar.shrink {
+        height: 60px;
+      }
+      .nav-list {
+        display: flex;
+        list-style: none;
+        gap: 15px;
+        margin: 0;
+        padding: 0;
+      }
+      .nav-item a {
+        padding: 10px 15px;
+        color: #fff;
+        text-decoration: none;
+        transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, color 0.3s ease;
+        background: none;
+        border-radius: 0;
+      }
+      /* Sidebar styles remain unchanged */
+      #sidebar {
+        position: fixed;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        width: 50px;
+        background: #222;
+        color: #fff;
+        box-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+        transition: width 0.3s ease;
+        overflow: hidden;
+        z-index: 1100;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+      #sidebar.expanded {
+        width: 200px;
+      }
+      .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .sidebar-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        cursor: pointer;
+      }
+      .sidebar-toggle {
+        background: none;
+        border: none;
+        color: inherit;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+      .sidebar-label {
+        margin-left: 10px;
+        font-size: 1rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      #sidebar.expanded .sidebar-label {
+        opacity: 1;
+      }
+      /* Hero Section: unified background */
+      .hero {
+        position: relative;
+        width: 100%;
+        height: 60vh;
+        background: #808080;  /* Global grey */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        color: #fff;
+        overflow: hidden;
+        margin-top: 90px;
+        padding: 20px;
+      }
+      .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 15px;
+        font-weight: 700;
+        opacity: 0;
+      }
+      .hero p {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+        max-width: 800px;
+        opacity: 0;
+      }
+      /* Get Started Section: unified background */
+      .get-started {
+        padding: 40px 20px;
+        text-align: center;
+        background: #808080;  /* Global grey */
+        margin-bottom: 40px;
+        border: 1px solid #000000;
+        border-radius: 4px;
+      }
+      .get-started .cta-btn {
+        padding: 12px 24px;
+        font-size: 1.1rem;
+        color: #fff;
+        background: #000;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      }
+      /* Dashboard Section: unified background */
+      .dashboard {
+        padding: 70px 20px;
+        background: #808080;  /* Global grey */
+        text-align: center;
+        margin-bottom: 40px;
+        border: 1px solid #000000;
+        border-radius: 4px;
+      }
+      .dashboard h2 {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+        font-weight: 600;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .card {
+        background: #808080;  /* Global grey */
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 25px;
+        transition: transform 0.3s ease;
+        border: 1px solid #000000;
+      }
+      .card:hover {
+        transform: translateY(-8px);
+      }
+      .card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+      .card p {
+        font-size: 1rem;
+        margin: 0;
+      }
+      /* Call-to-Action Section: unified background */
+      .cta-section {
+        padding: 70px 20px;
+        background: #808080;  /* Global grey */
+        text-align: center;
+        color: #fff;
+        margin-bottom: 40px;
+        border: 1px solid #000000;
+        border-radius: 4px;
+      }
+      .cta-section h2 {
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+      .cta-section .cta-btn {
+        padding: 12px 24px;
+        font-size: 1.1rem;
+        background: #fff;
+        color: #000;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      }
+      .cta-section .cta-btn:hover {
+        transform: scale(1.02);
+        background-color: #555;
+        box-shadow: 0 0 8px rgba(255,255,255,0.3);
+      }
+      .cta-section .cta-btn:active {
+        transform: scale(0.98);
+        background-color: #666;
+      }
+      /* Expanded Content Section: unified background */
+      .expanded-content {
+        padding: 70px 20px;
+        background: #808080;  /* Global grey */
+        max-width: 1000px;
+        margin: 40px auto;
+        text-align: left;
+        border: 1px solid #000000;
+        border-radius: 4px;
+      }
+      .expanded-content h2, 
+      .expanded-content h3 {
+        margin-top: 1.2em;
+        font-weight: 600;
+      }
+      .expanded-content p {
+        margin: 0.8em 0;
+      }
+      .expanded-content ul {
+        margin-left: 20px;
+        margin-bottom: 1em;
+      }
+      .expanded-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1em;
+      }
+      .expanded-content th,
+      .expanded-content td {
+        border: 1px solid #000000;
+        padding: 8px;
+        text-align: left;
+      }
+      /* Particle containers */
+      #particles-js {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+      #particles-glb-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+      }
+      
+      /* Enhanced Visual Spacing */
+      h1, h2, h3, h4, h5, h6 {
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      p {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+      }
+      ul, ol {
+        margin: 1rem 0;
+        padding-left: 1.5rem;
+      }
+      img, #webgl-container {
+        margin: 1rem 0;
+        padding: 0.5rem;
+      }
+      section {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        padding: 2rem 1rem;
+        border: 1px solid #000000;
+        border-radius: 4px;
+      }
+      
+      /* Uniform Interactive Elements Styling */
+      a, button, .cta-btn, .nav-item a {
+        transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, color 0.3s ease;
+      }
+      a:hover, a:focus, .nav-item a:hover, .nav-item a:focus {
+        color: #ddd;
+        text-decoration: underline;
+      }
+      button:hover, .cta-btn:hover {
+        transform: scale(1.02);
+        background-color: #555;
+        box-shadow: 0 0 8px rgba(255,255,255,0.3);
+      }
+      button:active, .cta-btn:active {
+        transform: scale(0.98);
+        background-color: #666;
+      }
+      
+      /* Initially hide the expanded marketing content */
+      #expanded-content {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Global Sidebar Menu -->
+    <div id="sidebar">
+      <ul class="sidebar-menu">
+        <li class="sidebar-item">
+          <button id="sidebar-dark-mode-toggle" class="sidebar-toggle">&#9790;</button>
+          <span class="sidebar-label">Dark Mode</span>
+        </li>
+        <li class="sidebar-item">
+          <button class="sidebar-toggle">&#43;</button>
+          <span class="sidebar-label">Utilities</span>
+        </li>
+      </ul>
+    </div>
+    
+    <!-- Navbar with Model Links -->
+    <div class="navbar" id="navbar">
+      <ul class="nav-list">
+        <li class="nav-item"><a href="#hero">Home</a></li>
+        <li class="nav-item"><a href="{{ url_for('churn.churn') }}">Churn Analysis</a></li>
+        <li class="nav-item"><a href="{{ url_for('nps.nps') }}">NPS Analysis</a></li>
+        <li class="nav-item"><a href="{{ url_for('media.media_home') }}">Media Analysis</a></li>
+        <li class="nav-item"><a href="{{ url_for('about.about') }}">About</a></li>
+      </ul>
+    </div>
+    <!-- Particle containers -->
+    <div id="particles-js"></div>
+    <div id="particles-glb-container"></div>
+    
+<!-- Hero Section with WebGL container -->
+<!-- Example snippet from index.html -->
+<div class="hero" id="hero">
+    <h1>Welcome to Lucid Analytics</h1>
+    <p>Experience the future of data analytics with clear, actionable insights.</p>
+    <!-- ... -->
+</div>
+    <!-- WebGL container for the 3D model -->
+    <div id="webgl-container"></div>
+    <!-- Big, prominent transformation button -->
+    <button id="transform-btn" style="
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px 40px;
+    font-size: 2rem;
+    background-color: black;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.4);
+    z-index: 10002;
+  ">Transform</button>
+  
+  </div>
+  
+    
+    <!-- Get Started Section -->
+    <section class="get-started" id="get-started">
+      <!-- Redirect to churn page on click -->
+      <button class="cta-btn" id="hero-cta" onclick="location.href='{{ url_for('churn.churn') }}'">Get Started</button>
+    </section>
+    
+    <!-- Dashboard Section -->
+    <section class="dashboard" id="dashboard">
+      <h2>Dashboard Highlights</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Data Insights</h3>
+          <p>Comprehensive analytics and trends at a glance.</p>
+        </div>
+        <div class="card">
+          <h3>Automation</h3>
+          <p>Simplify processes and optimize performance.</p>
+        </div>
+        <div class="card">
+          <h3>Growth Metrics</h3>
+          <p>Clear insights to drive your business forward.</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Call-to-Action Section -->
+    <section class="cta-section" id="cta">
+      <h2>Ready to Dive In?</h2>
+      <p>Join us now and transform your business insights.</p>
+      <!-- Explore More button reveals the expanded marketing text -->
+      <button class="cta-btn" id="cta-btn">Explore More</button>
+    </section>
+    
+    <!-- Expanded Content Section with revamped marketing text (initially hidden) -->
+    <section class="expanded-content" id="expanded-content">
+      <!-- Marketing Without the Guesswork -->
+      <section id="marketing-without-guesswork">
+        <h2>Marketing Without the Guesswork</h2>
+        <p>Marketing moves incredibly fast—keeping pace with culture, technology, and the fierce competition can feel like chasing your tail. Despite all the precision in targeting, there's still a nagging uncertainty: Are you really making the right moves?</p>
+        <p>This platform changes the game. Instead of guesswork, you get clear, actionable insights. No fluff, no vanity metrics—just real predictions that help you act before the problems hit.</p>
+      </section>
+      <hr>
+      <!-- What This Platform Actually Does -->
+      <section id="what-this-platform-does">
+        <h2>What This Platform Actually Does</h2>
+        <p>Forget the endless dashboards and complicated reports. This is about straightforward tools designed to help you act proactively:</p>
+        <h3>Churn Prediction</h3>
+        <ul>
+          <li>Spot customers who might leave before they do.</li>
+          <li>Tailor your retention tactics based on real insights.</li>
+          <li>Dynamically adapt your approach instead of scrambling afterward.</li>
+        </ul>
+        <h3>NPS Scoring & Customer Sentiment</h3>
+        <ul>
+          <li>Understand how customers really feel before issues surface.</li>
+          <li>Quickly refine interactions when sentiment shifts.</li>
+          <li>Measure true loyalty—not just momentary reactions.</li>
+        </ul>
+        <h3>Media Effectiveness Analysis</h3>
+        <ul>
+          <li>Clearly see which channels genuinely drive results.</li>
+          <li>Forecast your ROI accurately across different scenarios.</li>
+          <li>Adjust your marketing efforts in real time—no delays, no wasted budgets.</li>
+        </ul>
+        <p>Simply put: Know where to invest before a mistake costs you dearly.</p>
+      </section>
+      <hr>
+      <!-- From Reactive to Proactive Marketing -->
+      <section id="from-reactive-to-proactive">
+        <h2>From Reactive to Proactive Marketing</h2>
+        <p>No one likes playing catch-up. Traditional marketing tools keep you looking backward, analyzing things only after they've gone wrong. But in today's environment, reacting too late can mean never recovering.</p>
+        <ul>
+          <li>Detect campaign issues before they impact your results.</li>
+          <li>Spot potential customer drop-off in time to fix it.</li>
+          <li>Spend your ad budget confidently, knowing exactly where you'll see real results.</li>
+        </ul>
+        <p>Great marketing isn't just about collecting data—it's about using data to make faster, smarter decisions.</p>
+      </section>
+      <hr>
+      <!-- Dashboard Insights Simplified -->
+      <section id="dashboard-insights-simplified">
+        <h2>Dashboard Insights Simplified</h2>
+        <p>We keep it clear and straightforward. Here’s exactly what you’ll see:</p>
+        <ul>
+          <li>Churn risk predictions.</li>
+          <li>Clear NPS and customer sentiment evaluations.</li>
+          <li>Real-world ROI simulations.</li>
+          <li>Easy-to-understand scenario modeling for your ad spend.</li>
+        </ul>
+      </section>
+      <hr>
+      <!-- Marketing's Changing—Don't Get Left Behind -->
+      <section id="marketings-changing">
+        <h2>Marketing's Changing—Don't Get Left Behind</h2>
+        <p>The marketing world moves fast, competition is fierce, budgets are tight, and mistakes are costly. But winning isn't just about bigger budgets or flashier ads—it's about staying ahead.</p>
+        <p>This platform gives you the tools to make confident, timely decisions. Stop guessing and start optimizing today.</p>
+      </section>
+      <hr>
+    </section>
+    
+    <script defer>
+      // Smooth scroll for anchor links.
+      document.addEventListener('click', function(e) {
+        if (e.target.matches('a[href^="#"]')) {
+          e.preventDefault();
+          const target = document.querySelector(e.target.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+      
+      // Navbar shrink and parallax effect.
+      window.addEventListener('scroll', function() {
+        const navbar = document.getElementById('navbar');
+        if (navbar) {
+          if (window.scrollY > 50) {
+            navbar.classList.add('shrink');
+          } else {
+            navbar.classList.remove('shrink');
+          }
+        }
+        const hero = document.querySelector('.hero');
+        if (hero) {
+          hero.style.backgroundPositionY = -(window.scrollY * 0.5) + 'px';
+        }
+      });
+      
+      // Fade-in animation for hero text using GSAP.
+      window.addEventListener('load', function() {
+        gsap.from('.hero h1', { duration: 1, opacity: 0, y: -50 });
+        gsap.from('.hero p', { duration: 1, opacity: 0, y: -50, delay: 0.5 });
+      });
+      
+      // Ripple effect on CTA button click.
+      document.querySelectorAll('.cta-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+          const rect = this.getBoundingClientRect();
+          const ripple = document.createElement('span');
+          const size = Math.max(rect.width, rect.height);
+          const x = e.clientX - rect.left - size / 2;
+          const y = e.clientY - rect.top - size / 2;
+          ripple.style.width = ripple.style.height = size + 'px';
+          ripple.style.left = x + 'px';
+          ripple.style.top = y + 'px';
+          ripple.classList.add('ripple');
+          this.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 600);
+        });
+      });
+      
+      // Show the expanded marketing content when "Explore More" is clicked
+      document.getElementById('cta-btn').addEventListener('click', function() {
+        const expandedContent = document.getElementById('expanded-content');
+        expandedContent.style.display = 'block';
+        // Smooth scroll to the expanded content
+        expandedContent.scrollIntoView({ behavior: 'smooth' });
+      });
+    </script>
+      
+    <!-- Use the bundled JavaScript output -->
+    <script type="module" src="{{ url_for('static', filename='dist/assets/main-Cr53DRCI.js')}}"></script>
+</body>
+</html>

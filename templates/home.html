@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Home - Interactive Dashboard{% endblock %}
+{% block extra_styles %}
+  <!-- Load skeleton-specific styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/skeleton.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+  <!-- Skeleton Hand Section -->
+  <section class="skeleton-hand-section" style="text-align: center; margin: 20px 0;">
+    <h2>Interactive Skeleton Hand</h2>
+    <!-- Updated: Using a WebGL container instead of an image -->
+    <div id="webgl-container" style="margin: 20px auto; width: 300px; height: 300px; background-color: #000;"></div>
+    <input type="text" id="user-input" placeholder="Enter data to transform the hand" style="padding: 10px; width: 80%; max-width: 300px;">
+    <button id="transform-btn" style="padding: 10px 20px; margin-top: 10px;">Transform Hand</button>
+  </section>
+
+  <!-- Existing Dashboard Content -->
+  <header class="dashboard-header">
+    <h1>Home - Interactive Dashboard</h1>
+    <p>Welcome to the interactive dashboard!</p>
+    <button id="dark-mode-toggle" class="toggle-btn">Toggle Dark Mode</button>
+  </header>
+  <div class="dashboard-cards">
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-content">
+        <h2>Live Updates</h2>
+        <p>Real-time data stream and updates.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <div class="card-content">
+        <h2>Recent Activity</h2>
+        <p>Monitor recent user interactions.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <div class="card-content">
+        <h2>Quick Actions</h2>
+        <p>Perform tasks quickly with shortcuts.</p>
+      </div>
+    </div>
+  </div>
+  <div class="dashboard-additional">
+    <h2>Additional Insights</h2>
+    <p>More detailed charts and insights will appear here.</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+  <!-- Load skeleton-specific JavaScript -->
+  <script src="{{ url_for('static', filename='js/skeleton.js') }}"></script>
+  <script>
+    // Dark Mode Toggle
+    document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+    });
+  </script>
+{% endblock %}

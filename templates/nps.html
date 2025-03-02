@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% block title %}NPS Analysis{% endblock %}
+{% block content %}
+<div class="model-content">
+  <h1>NPS Analysis</h1>
+  
+  <!-- Descriptive text block integrated here -->
+  <p class="model-description">
+    The Net Promoter Score (NPS) Analysis model evaluates customer satisfaction and loyalty by interpreting feedback and sentiment. It helps businesses understand customer perceptions, identify areas for improvement, and enhance overall customer experience.
+  </p>
+  
+  <!-- NPS Analysis Form -->
+  <form id="nps-form" action="{{ url_for('nps.predict_nps') }}" method="post">
+    <div>
+      <label for="spend">Spend:</label>
+      <input type="range" name="spend" id="spend" min="500" max="1500" step="1" value="1000" oninput="document.getElementById('spendOutput').value = this.value">
+      <output id="spendOutput">1000</output>
+    </div>
+    <div>
+      <label for="acquisition_cost">Acquisition Cost:</label>
+      <input type="range" name="acquisition_cost" id="acquisition_cost" min="50" max="150" step="1" value="100" oninput="document.getElementById('acqOutput').value = this.value">
+      <output id="acqOutput">100</output>
+    </div>
+    <div>
+      <label for="engagement_score">Engagement Score:</label>
+      <input type="range" name="engagement_score" id="engagement_score" min="0" max="10" step="1" value="5" oninput="document.getElementById('engOutput').value = this.value">
+      <output id="engOutput">5</output>
+    </div>
+    <div>
+      <label for="impressions">Impressions:</label>
+      <input type="range" name="impressions" id="impressions" min="1000" max="6000" step="1" value="3000" oninput="document.getElementById('impOutput').value = this.value">
+      <output id="impOutput">3000</output>
+    </div>
+    <div>
+      <label for="revenue">Revenue:</label>
+      <input type="range" name="revenue" id="revenue" min="500" max="5500" step="1" value="3000" oninput="document.getElementById('revOutput').value = this.value">
+      <output id="revOutput">3000</output>
+    </div>
+    <div>
+      <label for="conversions">Conversions:</label>
+      <input type="range" name="conversions" id="conversions" min="50" max="250" step="1" value="150" oninput="document.getElementById('convOutput').value = this.value">
+      <output id="convOutput">150</output>
+    </div>
+    <div>
+      <label for="spend_impressions_interaction">Spend-Impressions Interaction:</label>
+      <input type="range" name="spend_impressions_interaction" id="spend_impressions_interaction" min="1000" max="10000" step="1" value="5000" oninput="document.getElementById('spiOutput').value = this.value">
+      <output id="spiOutput">5000</output>
+    </div>
+    <div style="text-align:center; margin-top:20px;">
+      <button class="action-button" type="submit">Predict NPS</button>
+      <button class="action-button" type="button" id="randomize-btn">Randomize Values</button>
+    </div>
+  </form>
+  
+  <!-- Big block result container for returned percentages/inference values -->
+  <div id="churn-prediction-result"></div>
+  
+  <!-- Graph image containers -->
+  <div class="graph-section">
+    <h2>Density Plot</h2>
+    <img id="density-img" src="" alt="Density Plot" />
+  </div>
+  <div class="graph-section">
+    <h2>Bubble Chart</h2>
+    <img id="bubble-img" src="" alt="Bubble Chart" />
+  </div>
+</div>
+
+<!-- Modal for graph expansion -->
+<div id="modal">
+  <span id="modal-close">&times;</span>
+  <div id="modal-content">
+    <img id="modal-img" src="" alt="Expanded Graph" />
+  </div>
+</div>
+
+<script>
+  // Utility function for debugging.
+  function logDebug(msg) {
+    console.log("[DEBUG]", msg);
+  }
+
+  // Click-to-expand: add click listeners to images.
+  function addExpandListener(imgElement) {
+    imgElement.addEventListener('click', function() {
+      document.getElementById('modal-img').src = this.src;
+      document.getElementById('modal').style.display = "block";
+    });
+  }
+  function attachExpandListeners() {
+    addExpandListener(document.getElementById('density-img'));
+    addExpandListener(document.getElementById('bubble-img'));
+  }
+  
+  // Close modal if clicking the close button or outside modal content.
+  document.getElementById('modal-close').addEventListener('click', function() {
+    document.getElementById('modal').style.display = "none";
+  });
+  window.addEventListener('click', function(event) {
+    if (event.target == document.getElementById('modal')) {
+      document.getElementById('modal').style.display = "none";
+    }
+  });
+
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  document.getElementById('randomize-btn').addEventListener('click', function() {
+    document.getElementById('spend').value = getRandomInt(500, 1500);
+    document.getElementById('spendOutput').value = document.getElementById('spend').value;
+    document.getElementById('acquisition_cost').value = getRandomInt(50, 150);
+    document.getElementById('acqOutput').value = document.getElementById('acquisition_cost').value;
+    document.getElementById('engagement_score').value = getRandomInt(0, 10);
+    document.getElementById('engOutput').value = document.getElementById('engagement_score').value;
+    document.getElementById('impressions').value = getRandomInt(1000, 6000);
+    document.getElementById('impOutput').value = document.getElementById('impressions').value;
+    document.getElementById('revenue').value = getRandomInt(500, 5500);
+    document.getElementById('revOutput').value = document.getElementById('revenue').value;
+    document.getElementById('conversions').value = getRandomInt(50, 250);
+    document.getElementById('convOutput').value = document.getElementById('conversions').value;
+    document.getElementById('spend_impressions_interaction').value = getRandomInt(1000, 10000);
+    document.getElementById('spiOutput').value = document.getElementById('spend_impressions_interaction').value;
+  });
+  
+  // Handle AJAX form submission for prediction.
+  document.getElementById('nps-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    logDebug("Submitting form for prediction...");
+    fetch('{{ url_for("nps.predict_nps") }}', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      logDebug("Prediction response: " + JSON.stringify(data));
+      if (data.error) {
+        document.getElementById('churn-prediction-result').innerHTML = `<p>Error: ${data.error}</p>`;
+      } else if (data.task_id) {
+        pollStatus(data.task_id);
+      } else {
+        document.getElementById('churn-prediction-result').innerHTML = `<p>Unexpected response</p>`;
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('churn-prediction-result').innerHTML = `<p>Error: ${error}</p>`;
+    });
+  });
+  
+  // Polling function for task status.
+  function pollStatus(taskId) {
+    logDebug("Polling status for task " + taskId);
+    fetch(`/nps/status/${taskId}`)
+      .then(response => response.json())
+      .then(data => {
+        logDebug("Status response: " + JSON.stringify(data));
+        if (data.state === 'PENDING' || data.state === 'STARTED') {
+          setTimeout(() => pollStatus(taskId), 2000);
+        } else if (data.state === 'SUCCESS') {
+          if (data.result && data.result.predicted_segment) {
+            // Display predicted percentage in the big block result container.
+            document.getElementById('churn-prediction-result').innerHTML = data.result.predicted_probability;
+  
+            const spend = document.getElementById('spend').value;
+            const revenue = document.getElementById('revenue').value;
+            const acquisition_cost = document.getElementById('acquisition_cost').value;
+            const engagement_score = document.getElementById('engagement_score').value;
+            const impressions = document.getElementById('impressions').value;
+            const conversions = document.getElementById('conversions').value;
+            const spend_impressions_interaction = document.getElementById('spend_impressions_interaction').value;
+            const predicted_spend = data.result.predicted_spend || (spend * 1.2);
+            const predicted_revenue = data.result.predicted_revenue || (revenue * 1.2);
+  
+            const densityUrl = `/nps/predicted_density_image?spend=${spend}&predicted_spend=${predicted_spend}`;
+            const bubbleUrl = `/nps/predicted_bubble_image?spend=${spend}&revenue=${revenue}&acquisition_cost=${acquisition_cost}&engagement_score=${engagement_score}&impressions=${impressions}&conversions=${conversions}&spend_impressions_interaction=${spend_impressions_interaction}&predicted_spend=${predicted_spend}&predicted_revenue=${predicted_revenue}`;
+  
+            document.getElementById('density-img').src = densityUrl;
+            document.getElementById('bubble-img').src = bubbleUrl;
+  
+            attachExpandListeners();
+          } else {
+            document.getElementById('churn-prediction-result').innerHTML =
+              `<p>Error: ${data.error || 'No result returned'}</p>`;
+          }
+        } else {
+          document.getElementById('churn-prediction-result').innerHTML =
+            `<p>Status: ${data.state} - ${data.status}</p>`;
+        }
+      })
+      .catch(error => console.error('Polling error:', error));
+  }
+</script>
+{% endblock %}
