@@ -38,8 +38,8 @@ services:
     depends_on:
       - redis
     environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis:redis://localhost:6379/0
+      - CELERY_RESULT_BACKEND=redis:redis://localhost:6379/0
       - TZ=EST
       - CHURN_MODEL_PATH=/app/models/churn_model_20250220_182726.pkl
       - CHURN_SCALER_PATH=/app/models/minmax_scaler.pkl

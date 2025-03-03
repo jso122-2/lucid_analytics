@@ -295,9 +295,6 @@ function createPermanentPrompt() {
 
 // When the Transform button is pressed, advance the sequence.
 function onTransformClick() {
-  console.log("Transform button pressed.");
-  if (isSequenceActive) return;
-  isSequenceActive = true;function onTransformClick() {
     console.log("Transform button pressed.");
     if (isSequenceActive) return;
     isSequenceActive = true;
@@ -374,7 +371,7 @@ function onTransformClick() {
       });
     }
   }
-  
+    
 
   // Remove the permanent prompt.
   let promptDiv = document.getElementById("permanent-prompt");
@@ -626,4 +623,4 @@ function initCTAAnimation() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", init)
+document.addEventListener("DOMContentLoaded", init);

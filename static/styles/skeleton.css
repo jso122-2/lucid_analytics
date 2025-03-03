@@ -5,16 +5,29 @@ html, body {
     height: 100%;
   }
   
-    /* Hand Container: Adjust to fit the viewport and center content in dark mode */
-    .hand-container {
+    /* Hero Section remains similar but now wraps the hand container */
+    .hero {
         position: relative;
         width: 100%;
-        height: 100vh;               
-        max-width: 1200px;
-        margin: 0 auto;
+        background: #121212;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        color: #e0e0e0;
         overflow: hidden;
-        background-color: #121212;   /* Dark background for dark mode */
+        margin-top: 90px;
+        padding: 20px;
     }
+
+    /* Hand container inside hero; adjust height as needed */
+    #webgl-container {
+        width: 100%;
+        height: 400px; /* Adjust this value based on your desired size */
+        background-color: #000; /* Retain dark background or modify as needed */
+        margin-top: 20px;  /* A small gap if desired */
+    }
+
   
   
   /* Transform Button: Styled to be prominent and interactive */

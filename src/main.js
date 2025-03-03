@@ -4,7 +4,7 @@ console.log("main.js is executing");
 import gsap from "gsap";
 import anime from "animejs";
 // Then import your other modules:
-import "./skeleton.js";
+import "./skeleton.jsx";
 import "./particlesGLB.js";
 // etc.
 import "./navbar.js";
