@@ -6,20 +6,21 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
-
     <!-- CSS files -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/skeleton.css') }}" />
-
     <!-- Inject the MinIO base URL -->
     <script>
       window.MINIO_BASE_URL = "{{ minio_base_url }}";
     </script>
-    
+    <!-- JS Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  </head>
+  <body>
+
 
     <style>
     /* Global Base: unified dark mode background, font, and text color */
@@ -30,7 +31,7 @@
     min-height: 100%;
     overflow-x: hidden;
     font-family: Arial, sans-serif;
-    background: #121212;  /* Dark mode background */
+    background: transparent;  /* Dark mode background */
     color: #e0e0e0;       /* Light text for readability */
     line-height: 1.6;
     transition: background 0.5s ease, color 0.5s ease;
@@ -123,7 +124,7 @@
         position: relative;
         width: 100%;
         height: 60vh;
-        background: #121212;  /* Dark mode background */
+        background: transparent;  /* Dark mode background */
         display: flex;
         align-items: center;
         justify-content: center;
@@ -359,44 +360,38 @@
     </style>
   </head>
   <body>
-    <!-- Global Sidebar Menu -->
-    <div id="sidebar">
-      <ul class="sidebar-menu">
-        <li class="sidebar-item">
-          <button id="sidebar-dark-mode-toggle" class="sidebar-toggle">&#9790;</button>
-          <span class="sidebar-label">Dark Mode</span>
-        </li>
-        <li class="sidebar-item">
-          <button class="sidebar-toggle">&#43;</button>
-          <span class="sidebar-label">Utilities</span>
-        </li>
-      </ul>
-    </div>
-    
-    <!-- Navbar with Model Links -->
-    <div class="navbar" id="navbar">
-      <ul class="nav-list">
-        <li class="nav-item"><a href="#hero">Home</a></li>
-        <li class="nav-item"><a href="{{ url_for('churn.churn') }}">Churn Analysis</a></li>
-        <li class="nav-item"><a href="{{ url_for('nps.nps') }}">NPS Analysis</a></li>
-        <li class="nav-item"><a href="{{ url_for('media.media_home') }}">Media Analysis</a></li>
-        <li class="nav-item"><a href="{{ url_for('about.about') }}">About</a></li>
-      </ul>
-    </div>
-    <!-- Particle containers -->
-    <div id="particles-js"></div>
-    <div id="particles-glb-container"></div>
-    
-    <div class="hero" id="hero">
-        <h1 class="project-heading">Lucid Analytics</h1>
-        <p>Experience the future of data analytics with clear, actionable insights.</p>
-        <!-- Additional hero content if needed -->
-    </div>
-    
-    
+       <!-- Global Sidebar Menu -->
+       <div id="sidebar">
+        <ul class="sidebar-menu">
+          <li class="sidebar-item">
+            <button id="sidebar-dark-mode-toggle" class="sidebar-toggle">&#9790;</button>
+            <span class="sidebar-label">Dark Mode</span>
+          </li>
+          <li class="sidebar-item">
+            <button class="sidebar-toggle">&#43;</button>
+            <span class="sidebar-label">Utilities</span>
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Navbar with Model Links -->
+      <div class="navbar" id="navbar">
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#hero">Home</a></li>
+          <li class="nav-item"><a href="{{ url_for('churn.churn') }}">Churn Analysis</a></li>
+          <li class="nav-item"><a href="{{ url_for('nps.nps') }}">NPS Analysis</a></li>
+          <li class="nav-item"><a href="{{ url_for('media.media_home') }}">Media Analysis</a></li>
+          <li class="nav-item"><a href="{{ url_for('about.about') }}">About</a></li>
+        </ul>
+      </div>
+  
+      <div id="particles-js" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
 
-<!-- WebGL container for the 3D model -->
-<div id="webgl-container"></div>
+      
+
+      <!-- Container for your Three.js or WebGL content -->
+      <div id="webgl-container"></div>
+  <!-- Container for particles.js effect -->
     <!-- Big, prominent transformation button -->
     <button id="transform-btn" style="
     position: absolute;
@@ -420,7 +415,7 @@
     <!-- Get Started Section -->
     <section class="get-started" id="get-started">
       <!-- Redirect to churn page on click -->
-      <button class="cta-btn" id="hero-cta" onclick="location.href='{{ url_for('churn.churn') }}'">Get Started</button>
+      <button class="cta-btn" id="hero-cta" onclick="location.href='{{ url_for('churn.churn')}}'">Get Started</button>
     </section>
     
     <!-- Dashboard Section -->
@@ -578,6 +573,6 @@
     </script>
       
     <!-- Use the bundled JavaScript output -->
-    <script type="module" src="{{ url_for('static', filename='dist/assets/main-D6dE2S0l.js')}}"></script>
+    <script type="module" src="{{ url_for('static', filename='dist/assets/main-D1ixR3DF.js')}}"></script>
 </body>
 </html>

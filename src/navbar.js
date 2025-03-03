@@ -11,16 +11,31 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Navbar shrink on scroll
+  // Navbar shrink on scroll - use .navbar instead of .navbar.full-navbar
   window.addEventListener("scroll", function () {
-    const navbar = document.querySelector(".navbar.full-navbar");
-    if (window.scrollY > 50) {
-      navbar.classList.add("shrink");
-    } else {
-      navbar.classList.remove("shrink");
+    const navbar = document.querySelector(".navbar");
+    if (navbar) {
+      if (window.scrollY > 50) {
+        navbar.classList.add("shrink");
+      } else {
+        navbar.classList.remove("shrink");
+      }
     }
   });
 
-  // Bubble-style navigation hover animations are handled via CSS,
-  // but you can add additional JS animations here if desired.
+  // Center the navbar container using flexbox.
+  const navbarContainer = document.querySelector(".navbar-container");
+  if (navbarContainer) {
+    navbarContainer.style.display = "flex";
+    navbarContainer.style.justifyContent = "center";
+  }
+
+  // Remove the Utilities button, if present.
+  // (Assumes the Utilities button has a recognizable class or id.)
+  const utilitiesButton = document.querySelector("#sidebar .sidebar-item:nth-child(2)");
+  if (utilitiesButton) {
+    utilitiesButton.remove();
+  }
+
+  // Additional JS animations for navbar hover effects could be added here if desired.
 });

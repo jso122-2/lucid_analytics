@@ -1,68 +1,246 @@
-/* Skeleton CSS - Centralized Styling for Dark Mode Interactive 3D Content */
-
-/* Ensure the viewport is set for mobile responsiveness */
-html, body {
+/* Global Dark Mode Styling */
+body {
+    background-color: #121212;  /* Dark background */
+    color: #e0e0e0;             /* Light text for readability */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
     margin: 0;
     padding: 0;
-    height: 100%;
 }
 
-/* Hand Container: Fills the viewport and centers content */
-.hand-container {
-    position: relative;
-    width: 100%;
-    height: 100vh;               
-    max-width: 1200px;
-    margin: 0 auto;
-    overflow: hidden;
-    background-color: #121212;   /* Dark background */
+/* Ensure links and interactive elements are styled for dark mode */
+a {
+    color: #4da6ff;
+}
+a:hover {
+    color: #80c1ff;
 }
 
-/* Transform Button: Prominent, interactive styling */
-.transform-button {
-    position: absolute;          /* Positioned relative to .hand-container */
-    bottom: 20px;                /* 20px from the bottom edge */
-    left: 50%;                   /* Center horizontally */
-    transform: translateX(-50%); /* Truly center the element */
-    padding: 15px 30px;          /* Adequate padding for touch devices */
-    font-size: 1.2rem;           /* Large, readable text */
-    font-weight: bold;
-    background: linear-gradient(45deg, #000, #444); /* Dark gradient background */
-    color: #fff;                 /* White text for high contrast */
-    border: none;                /* Remove default borders */
-    border-radius: 8px;          /* Soft rounded corners */
-    cursor: pointer;             /* Pointer cursor on hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-    z-index: 10;                 /* Ensure it appears above other content */
-    transition: background 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
+/* Shared Model Content Container */
+.model-content {
+    padding: 40px;
+    margin: 40px auto;
+    max-width: 1000px;
+    color: #e0e0e0;
+    background: transparent;
 }
 
-/* Transform Button Hover/Focus Effects */
-.transform-button:hover,
-.transform-button:focus {
-    background: linear-gradient(45deg, #444, #000);
-    transform: translateX(-50%) scale(1.05);
-}
-
-/* Big Project Heading: "Lucid Analytics" in Montserrat Bold */
-.project-heading {
-    font-family: 'Montserrat', sans-serif; /* Use Montserrat Bold */
-    font-weight: 700;
-    font-size: 4rem;         /* Big size for maximum impact */
-    text-transform: uppercase;  /* Uppercase for added impact */
+/* Shared Heading styling */
+.model-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
     text-align: center;
-    color: #e0e0e0;          /* Light text for dark mode */
-    letter-spacing: 2px;     /* Extra spacing for emphasis */
-    margin: 20px 0;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.7);
 }
+
+/* Shared descriptive text style */
+.model-content p.model-description {
+    font-size: 1.2rem;
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    padding: 0 20px;
+}
+
+/* Shared label styling */
+.model-content label {
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    display: block;
+    margin-top: 10px;
+}
+
+/* Shared output styling */
+.model-content output {
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Shared range input styling */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 5px;
+    background: #555;
+    outline: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Shared action button styling */
+.action-button {
+    padding: 10px 20px;
+    margin: 10px;
+    background: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.action-button:hover {
+    background: #333;
+}
+
+/* Percentage output box style (from Churn page) */
+#churn-prediction-result {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 40px 0;
+    background: #222;
+    padding: 20px;
+}
+
+/* Shared graph section styling (from NPS page) */
+.graph-section {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+.graph-section h2 {
+    margin-bottom: 10px;
+}
+.graph-section img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+/* Shared modal styling for graph expansion */
+#modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+}
+#modal-content {
+    margin: 5% auto;
+    display: block;
+    max-width: 90%;
+}
+#modal-content img {
+    width: 100%;
+    height: auto;
+}
+#modal-close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Three.js container styling - ensure transparency */
+#webgl-container {
+    background-color: transparent;
+}
+
+/* Orbit Controller Label styling - force text to white */
+#orbit-controller-label {
+    font-size: 1rem;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Make the body dark */
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  /* Navbar Container */
+  .navbar {
+    width: 100%;
+    position: relative;
+    z-index: 999; /* Ensure it stays above other elements */
+  }
+  
+  /* A "sexier" style for the container, with a gradient background, box shadow, etc. */
+  .sexier-navbar {
+    display: flex;
+    justify-content: center;    /* Center everything horizontally */
+    align-items: center;
+    gap: 40px;                  /* Spacing between logo and nav-list */
+    padding: 1rem 2rem;
+    background: linear-gradient(45deg, #0f0f0f, #2b2b2b);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  }
+  
+  /* The logo text */
+  .logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    white-space: nowrap;
+  }
+  
+  /* The nav-list is horizontal */
+  .nav-list {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Each nav-item link */
+  .nav-item a {
+    color: #4da6ff;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  .nav-item a:hover {
+    color: #80c1ff;
+  }
+  
+  /* Shrink effect on scroll */
+  .navbar.shrink .sexier-navbar {
+    padding: 0.5rem 2rem;
+    transition: padding 0.3s ease;
+  }
+    
 
 /* Responsive Adjustments for Smaller Screens */
 @media (max-width: 768px) {
-    .transform-button {
+    .action-button {
         padding: 10px 20px;
         font-size: 1rem;
     }
-    .project-heading {
-        font-size: 3rem; /* Adjust heading size on smaller screens */
+    .model-content h1 {
+        font-size: 2.5rem;
     }
 }

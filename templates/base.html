@@ -1,177 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <!-- Update title here -->
+  <head>
+    <meta charset="UTF-8" />
     <title>{% block title %}Lucid Analytics{% endblock %}</title>
-    <!-- Update meta tags if applicable -->
-    <meta name="description" content="Lucid Analytics provides clear, actionable marketing insights." />
-    <!-- Update logo reference if you have an image -->
-    <!-- For example, if your logo is referenced as below, change the image filename -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
-    {% block extra_styles %}
-    <style>
-      /* WebGL container style for the Skeleton Model in dark mode */
-      #webgl-container {
-         width: 100%;
-         height: 400px;
-         background-color: #121212;  /* Use the same dark background as the hero */
-      }
-    </style>
-    {% endblock %}
-   
-    </style>
-    {% endblock %}
-    <style>
-      /* Global Background and Typography for Dark Mode */
-      body {
-        background-color: #121212; /* Dark mode background */
-        color: #e0e0e0;            /* Light text for readability */
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-      }
-      
-      /* Responsive Navbar Styles */
-      .navbar {
-        background-color: #333;
-        padding: 10px 20px;
-        position: relative;
-      }
-      .navbar-container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-      .logo {
-        font-size: 1.5rem;
-        color: #fff;
-      }
-      .nav-menu {
-        list-style: none;
-        display: flex;
-        margin: 0 auto; /* Center the navigation menu */
-        padding: 0;
-      }
-      .nav-menu li {
-        position: relative;
-      }
-      .nav-menu li a {
-        display: block;
-        padding: 10px 15px;
-        color: #fff;
-        text-decoration: none;
-        transition: background 0.3s ease;
-      }
-      .nav-menu li a:hover {
-        background-color: #444;
-      }
-      /* Dropdown submenu styling (if needed) */
-      .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background-color: #444;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        min-width: 150px;
-        z-index: 100;
-      }
-      .dropdown-menu li a {
-        padding: 10px;
-      }
-      /* Show dropdown on hover for desktop */
-      .nav-menu li.dropdown:hover .dropdown-menu {
-        display: block;
-      }
-      /* Hamburger menu for mobile */
-      .hamburger {
-        display: none;
-        flex-direction: column;
-        cursor: pointer;
-      }
-      .hamburger span {
-        height: 3px;
-        width: 25px;
-        background: #fff;
-        margin-bottom: 4px;
-        border-radius: 3px;
-        transition: all 0.3s ease;
-      }
-      
-      /* Media Queries for responsiveness */
-      @media screen and (max-width: 768px) {
-        .nav-menu {
-          flex-direction: column;
-          width: 100%;
-          display: none;
-          background-color: #333;
-        }
-        .nav-menu.active {
-          display: flex;
-        }
-        .nav-menu li {
-          width: 100%;
-        }
-        .nav-menu li a {
-          padding: 15px;
-          border-top: 1px solid #444;
-        }
-        .dropdown-menu {
-          position: static;
-        }
-        .hamburger {
-          display: flex;
-        }
-        /* Disable hover-based dropdowns on touch devices */
-        .nav-menu li.dropdown:hover .dropdown-menu {
-          display: none;
-        }
-      }
-      
-      /* Optional: Navbar shrink on scroll */
-      .navbar.full-navbar.shrink {
-        /* Additional shrink styles if needed */
-      }
-    </style>
-</head>
-<body>
-    <header class="main-header">
-      <nav class="navbar full-navbar">
-         <div class="navbar-container">
-            <div class="logo">MySite</div>
-            <ul class="nav-menu">
-                <li class="nav-item"><a href="{{ url_for('index') }}">Home</a></li>
-                <li class="nav-item"><a href="{{ url_for('churn.churn') }}">Churn Analysis</a></li>
-                <li class="nav-item"><a href="{{ url_for('nps.nps') }}">NPS Analysis</a></li>
-                <li class="nav-item"><a href="{{ url_for('media.media_home') }}">Media Analysis</a></li>
-                <!-- Example dropdown:
-                <li class="nav-item dropdown">
-                    <a href="#">More</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Option 1</a></li>
-                        <li><a href="#">Option 2</a></li>
-                    </ul>
-                </li>
-                -->
-            </ul>
-            <div class="hamburger">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-         </div>
-      </nav>
-    </header>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+    <!-- Meta Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Global CSS Files -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/skeleton.css') }}" />
+    <!-- Inject the MinIO base URL -->
+    <script>
+      window.MINIO_BASE_URL = "{{ minio_base_url }}";
+    </script>
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+    {% block extra_styles %}{% endblock %}
+  </head>
+  <body class="dark-mode">
+
+
+
+
+    <!-- Container for particles.js effect -->
+    <div id="particles-js"></div>
+
+    <!-- Three.js Model Container (transparent) -->
+    <div id="webgl-container" style="background-color: transparent;"></div>
+
+    <!-- Main Content Area -->
     <div class="content">
-        {% block content %}{% endblock %}
+      {% block content %}
+      <!-- Model-specific templates will provide their content here -->
+      {% endblock %}
     </div>
-    <!-- Include the updated navbar.js script -->
+
+    <!-- Load the navbar script -->
     <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
+    <!-- Load the bundled JavaScript (includes your Three.js scene and other logic) -->
+    <script type="module" src="{{ url_for('static', filename='dist/assets/main.js') }}"></script>
+
     {% block extra_scripts %}{% endblock %}
-</body>
+  </body>
 </html>

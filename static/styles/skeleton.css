@@ -1,80 +1,96 @@
 /* Ensure the viewport is set for mobile responsiveness */
 html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-  }
-  
-    /* Hero Section remains similar but now wraps the hand container */
-    .hero {
-        position: relative;
-        width: 100%;
-        background: #121212;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        color: #e0e0e0;
-        overflow: hidden;
-        margin-top: 90px;
-        padding: 20px;
-    }
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 
-    /* Hand container inside hero; adjust height as needed */
-    #webgl-container {
-        width: 100%;
-        height: 400px; /* Adjust this value based on your desired size */
-        background-color: #000; /* Retain dark background or modify as needed */
-        margin-top: 20px;  /* A small gap if desired */
-    }
+/* Hero Section: simplified to contain only plain text.
+   You can insert your text directly inside the .hero container,
+   or wrap it in a <span class="hero-text"> for additional styling. */
+.hero {
+  position: relative;
+  width: 100%;
+  background: #121212;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #e0e0e0;
+  overflow: hidden;
+  margin-top: 90px;
+  padding: 20px;
+}
 
-  
-  
-  /* Transform Button: Styled to be prominent and interactive */
+/* Optional: Specific styling for hero text if using a span */
+.hero .hero-text {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+/* WebGL container dark background */
+#webgl-container {
+  background-color: transparent;
+}
+
+/* Fixed Transform Button styling */
+#transform-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px; /* adjust as desired */
+  padding: 15px 30px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, #000, #444);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 1000;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+#transform-btn:hover,
+#transform-btn:focus {
+  background: linear-gradient(45deg, #444, #000);
+  transform: scale(1.05);
+}
+
+/* Styling for the article/text container */
+#article-container,
+#text-container {
+  margin: 20px auto;
+  width: 80%;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 10px;
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Particles.js container styling */
+#particles-js {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 500; /* Adjust if needed; ensure it's behind your Three.js canvas and text */
+  pointer-events: none;
+}
+
+/* Orbit Controller Label styling: changed text color to white */
+#orbit-controller-label {
+  font-size: 1rem;
+  color: #fff;  /* Updated from #000 to #fff */
+  font-weight: bold;
+}
+
+/* Responsive Adjustments for Smaller Screens */
+@media (max-width: 768px) {
   .transform-button {
-    position: absolute;          /* Positioned relative to the hand-container */
-    bottom: 20px;                /* 20px from the bottom edge */
-    left: 50%;                   /* Center horizontally */
-    transform: translateX(-50%); /* Offset to truly center the element */
-    padding: 15px 30px;          /* Adequate padding for touch interaction */
-    font-size: 1.2rem;           /* Large, readable text */
-    font-weight: bold;
-    background: linear-gradient(45deg, #000, #444); /* Dark gradient background */
-    color: #fff;                 /* White text for high contrast */
-    border: none;                /* Remove default borders */
-    border-radius: 8px;          /* Soft rounded corners */
-    cursor: pointer;             /* Pointer cursor on hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-    z-index: 10;                 /* Ensure the button appears above other content */
-    transition: background 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
+    padding: 10px 20px;
+    font-size: 1rem;
   }
-  
-  /* Hover and focus state for improved user interaction */
-  .transform-button:hover,
-  .transform-button:focus {
-    background: linear-gradient(45deg, #444, #000);
-    transform: translateX(-50%) scale(1.05);
-  }
-
-  .hero h1.project-heading {
-    font-family: 'Montserrat', sans-serif; /* Use Montserrat Bold */
-    font-weight: 700;
-    font-size: 4rem;         /* Big size for maximum impact */
-    text-transform: uppercase;  /* Optional: uppercase for emphasis */
-    text-align: center;
-    color: #e0e0e0;          /* Light text for dark mode */
-    letter-spacing: 2px;
-    margin: 20px 0;
-    opacity: 1 !important;  /* Ensure the heading is visible */
-  }
-  
-
-  
-  /* Responsive Adjustments for Smaller Screens */
-  @media (max-width: 768px) {
-    .transform-button {
-      padding: 10px 20px;
-      font-size: 1rem;
-    }
-  }
-  
+}

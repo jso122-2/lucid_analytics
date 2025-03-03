@@ -5,7 +5,8 @@ import gsap from "gsap";
 import anime from "animejs";
 // Then import your other modules:
 import "./skeleton.jsx";
-import "./particlesGLB.js";
+import "./particles.js";
+import "./particlesjs-config.json"
 // etc.
 import "./navbar.js";
 import "./sidebar.js";
