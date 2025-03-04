@@ -5,7 +5,7 @@ from blueprints.nps import nps_bp
 from blueprints.media import media_bp
 from blueprints.about import about_bp
 from blueprints.skeleton import skeleton_bp
-from utility_worker import utility_worker, run_in_background
+from utils.utility_worker import utility_worker, run_in_background
 
 
 app = Flask(__name__, static_folder="static", template_folder="templates", static_url_path="/static")
