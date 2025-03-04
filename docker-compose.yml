@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   web:
     build: .
@@ -18,6 +19,36 @@ services:
       - NPS_SCALER_PATH=/app/models/nps_scaler.pkl
       - MEDIA_MODEL_PATH=/app/models/media_model_20250219_002020.pkl
       - MEDIA_SCALER_PATH=/app/models/standard_scaler.pkl
+      - SITE_NAME=Lucid Analytics
+    volumes:
+      - .:/app
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - app-network
+
+  worker:
+    build: .
+    container_name: lucid_analytics_worker
+    working_dir: /app
+    command: celery -A utils.tasks.celery_app worker --loglevel=info
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - TZ=EST
+      - CHURN_MODEL_PATH=/app/models/churn_model_20250220_182726.pkl
+      - CHURN_SCALER_PATH=/app/models/minmax_scaler.pkl
+      - NPS_MODEL_PATH=/app/models/nps_model.pkl
+      - NPS_SCALER_PATH=/app/models/nps_scaler.pkl
+      - MEDIA_MODEL_PATH=/app/models/media_model_20250219_002020.pkl
+      - MEDIA_SCALER_PATH=/app/models/standard_scaler.pkl
+      - MINIO_ENDPOINT=http://minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+      - MINIO_BUCKET=marketing.models
+      - MINIO_OBJECT_PREFIX=models/
       - SITE_NAME=Lucid Analytics
     volumes:
       - .:/app

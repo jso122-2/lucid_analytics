@@ -58,7 +58,7 @@ pyls-spyder==0.4.0
 PyQt5==5.15.10
 PyQtWebEngine==5.15.6
 pywin32==308; sys_platform == "win32"
-redis==5.2.1
+redis==3.5.3
 seaborn==0.12.2
 scikit-learn==1.5.0
 scikit-survival==0.23.1
