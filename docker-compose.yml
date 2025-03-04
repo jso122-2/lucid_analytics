@@ -10,8 +10,8 @@ services:
       - redis
       - minio
     environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
       - TZ=EST
       - CHURN_MODEL_PATH=/app/models/churn_model_20250214_154838.pkl
       - CHURN_SCALER_PATH=/app/models/minmax_scaler.pkl
@@ -33,11 +33,10 @@ services:
     working_dir: /app
     command: celery -A utils.tasks.celery_app worker --loglevel=info
     depends_on:
-      redis:
-        condition: service_healthy
+      - redis
     environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
       - TZ=EST
       - CHURN_MODEL_PATH=/app/models/churn_model_20250220_182726.pkl
       - CHURN_SCALER_PATH=/app/models/minmax_scaler.pkl
@@ -84,11 +83,6 @@ services:
       - "6379:6379"
     networks:
       - app-network
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
 
 volumes:
   minio-data:
