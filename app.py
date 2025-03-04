@@ -5,6 +5,8 @@ from blueprints.nps import nps_bp
 from blueprints.media import media_bp
 from blueprints.about import about_bp
 from blueprints.skeleton import skeleton_bp
+from utility_worker import utility_worker, run_in_background
+
 
 app = Flask(__name__, static_folder="static", template_folder="templates", static_url_path="/static")
 
@@ -21,6 +23,12 @@ app.register_blueprint(skeleton_bp, url_prefix='/skeleton')
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/long_task')
+def long_task():
+    # This function will run in the background without blocking the request.
+    utility_worker.add_task(your_heavy_function, param1, param2)
+    return "Task is running in the background!"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
