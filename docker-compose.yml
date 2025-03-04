@@ -33,7 +33,8 @@ services:
     working_dir: /app
     command: celery -A utils.tasks.celery_app worker --loglevel=info
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
@@ -83,6 +84,11 @@ services:
       - "6379:6379"
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
 volumes:
   minio-data:
