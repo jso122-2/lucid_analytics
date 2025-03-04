@@ -23,6 +23,8 @@ services:
       - .:/app
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
+    networks:
+      - app-network
 
   minio:
     image: minio/minio
@@ -40,12 +42,19 @@ services:
       - "9001:9001"
     volumes:
       - minio-data:/data
+    networks:
+      - app-network
 
   redis:
     image: redis:alpine
     container_name: redis
     ports:
       - "6379:6379"
+    networks:
+      - app-network
 
 volumes:
   minio-data:
+
+networks:
+  app-network:
