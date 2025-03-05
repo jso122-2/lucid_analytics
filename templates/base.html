@@ -20,23 +20,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
     {% block extra_styles %}{% endblock %}
-    <!-- Auto dark mode toggle based on system preference -->
-    <script>
-      function setDarkMode(e) {
-        if (e.matches) {
-          document.body.classList.add('dark-mode');
-        } else {
-          document.body.classList.remove('dark-mode');
-        }
-      }
-      const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      // Set initial mode
-      setDarkMode(darkModeMediaQuery);
-      // Listen for changes in the system preference
-      darkModeMediaQuery.addEventListener('change', setDarkMode);
-    </script>
+    <!-- Removed auto dark mode toggle script for permanent dark mode -->
   </head>
-  <body>
+  <body class="dark-mode">
     <!-- Sidebar Menu -->
     <div id="sidebar">
       <ul class="sidebar-menu">
