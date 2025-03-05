@@ -27,10 +27,11 @@ if os.path.exists("/app/models"):
     os.environ["CHURN_COX_MODEL_PATH"] = "/app/models/churn_cox_model_20250225_172025.pkl"
     os.environ["CHURN_RSF_MODEL_PATH"] = "/app/models/churn_rsf_model.pkl"
 
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0")
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", "redis://localhost:6379/0")
+broker_url = os.environ.get("CELERY_BROKER_URL", "redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0")
+result_backend = os.environ.get("CELERY_RESULT_BACKEND", "redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0")
 
-celery_app = Celery("tasks", broker=CELERY_BROKER_URL, backend=CELERY_RESULT_BACKEND)
+celery_app = Celery('tasks', broker=broker_url, backend=result_backend)
+
 celery_app.conf.update(
     task_serializer="json",
     accept_content=["json"],

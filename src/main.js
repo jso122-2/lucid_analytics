@@ -7,9 +7,6 @@ import anime from "animejs";
 import "./skeleton.jsx";
 import "./particles.js";
 import "./particlesjs-config.json"
-// etc.
-import "./navbar.js";
-import "./sidebar.js";
 import "./dashboard.js";
 
 // etc. Possibly also run any init code here.
