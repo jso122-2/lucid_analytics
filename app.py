@@ -24,6 +24,10 @@ app.register_blueprint(skeleton_bp, url_prefix='/skeleton')
 def index():
     return render_template('index.html')
 
+@app.context_processor
+def inject_minio_url():
+ return dict(minio_base_url=os.environ.get("MINIO_BASE_URL", "https://lucidanalytics-production.up.railway.app/marketing.models/models/"))
+
 @app.route('/long_task')
 def long_task():
     # This function will run in the background without blocking the request.
