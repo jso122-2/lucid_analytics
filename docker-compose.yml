@@ -64,7 +64,7 @@ services:
       - MINIO_ACCESS_KEY=minioadmin
       - MINIO_SECRET_KEY=minioadmin
       - MINIO_BUCKET=marketing.models
-      - MINIO_ASSET_BASE_URL=http://minio:9000/marketing.models/models/
+      - MINIO_ASSET_BASE_URL=https://lucidanalytics-production.up.railway.app/marketing.models/models/
       - MINIO_OBJECT_PREFIX=models/
     command: server /data --console-address ":9001"
     ports:
