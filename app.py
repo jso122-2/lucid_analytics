@@ -26,7 +26,8 @@ def index():
 
 @app.context_processor
 def inject_minio_url():
- return dict(minio_base_url=os.environ.get("MINIO_BASE_URL", "https://lucidanalytics-production.up.railway.app/marketing.models/models/"))
+    return dict(minio_base_url=os.environ.get("MINIO_BASE_URL", "https://lucidanalytics-production.up.railway.app/marketing.models/models/"))
+
 
 @app.route('/long_task')
 def long_task():

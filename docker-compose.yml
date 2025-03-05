@@ -7,10 +7,11 @@ services:
     ports:
       - "5000:5000"
     depends_on:
+      - redis
       - minio
     environment:
-      - CELERY_BROKER_URL=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0
-      - CELERY_RESULT_BACKEND=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - TZ=EST
       - CHURN_MODEL_PATH=/app/models/churn_model_20250214_154838.pkl
       - CHURN_SCALER_PATH=/app/models/minmax_scaler.pkl
@@ -19,6 +20,7 @@ services:
       - MEDIA_MODEL_PATH=/app/models/media_model_20250219_002020.pkl
       - MEDIA_SCALER_PATH=/app/models/standard_scaler.pkl
       - SITE_NAME=Lucid Analytics
+      - MINIO_BASE_URL=https://lucidanalytics-production.up.railway.app/marketing.models/models/
     volumes:
       - .:/app
       - /etc/localtime:/etc/localtime:ro
@@ -33,6 +35,7 @@ services:
     command: celery -A utils.tasks.celery_app worker --loglevel=info
     depends_on:
       - minio
+      - redis
     environment:
       - CELERY_BROKER_URL=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0
       - CELERY_RESULT_BACKEND=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0
@@ -72,6 +75,14 @@ services:
       - "9001:9001"
     volumes:
       - minio-data:/data
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
     networks:
       - app-network
 

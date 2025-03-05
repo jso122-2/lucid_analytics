@@ -186,3 +186,6 @@
 2025-03-05 04:20:57,573 - my_app - INFO - Downloaded models/inference_features_survival.txt from MinIO to temporary file /tmp/tmpl6p4ycuj.
 2025-03-05 04:20:58,757 - my_app - INFO - BUCKET_NAME from env: marketing.models
 2025-03-05 04:20:59,210 - my_app - INFO - Downloaded models/inference_features_survival.txt from MinIO to temporary file /tmp/tmpyn4nv7e2.
+2025-03-05 04:20:59,773 - my_app - INFO - BUCKET_NAME from env: marketing.models
+2025-03-05 04:21:00,303 - my_app - INFO - Downloaded models/inference_features_survival.txt from MinIO to temporary file /tmp/tmpj819ht79.
+2025-03-05 04:21:01,231 - my_app - INFO - Downloaded models/inference_features_survival.txt from MinIO to temporary file /tmp/tmp7co96vgl.
