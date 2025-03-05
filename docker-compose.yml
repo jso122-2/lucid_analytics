@@ -9,8 +9,8 @@ services:
     depends_on:
       - minio
     environment:
-      - CELERY_BROKER_URL=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@redis.railway.internal:6379/0
-      - CELERY_RESULT_BACKEND=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@redis.railway.internal:6379/0
+      - CELERY_BROKER_URL=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0
+      - CELERY_RESULT_BACKEND=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0
       - TZ=EST
       - CHURN_MODEL_PATH=/app/models/churn_model_20250214_154838.pkl
       - CHURN_SCALER_PATH=/app/models/minmax_scaler.pkl
@@ -34,8 +34,8 @@ services:
     depends_on:
       - minio
     environment:
-      - CELERY_BROKER_URL=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@redis.railway.internal:6379/0
-      - CELERY_RESULT_BACKEND=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@redis.railway.internal:6379/0
+      - CELERY_BROKER_URL=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0
+      - CELERY_RESULT_BACKEND=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0
       - TZ=EST
       - CHURN_MODEL_PATH=/app/models/churn_model_20250220_182726.pkl
       - CHURN_SCALER_PATH=/app/models/minmax_scaler.pkl
