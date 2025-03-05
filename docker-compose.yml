@@ -7,11 +7,10 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      - redis
       - minio
     environment:
-      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
-      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+      - CELERY_BROKER_URL=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@redis.railway.internal:6379/0
+      - CELERY_RESULT_BACKEND=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@redis.railway.internal:6379/0
       - TZ=EST
       - CHURN_MODEL_PATH=/app/models/churn_model_20250214_154838.pkl
       - CHURN_SCALER_PATH=/app/models/minmax_scaler.pkl
@@ -33,10 +32,10 @@ services:
     working_dir: /app
     command: celery -A utils.tasks.celery_app worker --loglevel=info
     depends_on:
-      - redis
+      - minio
     environment:
-      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
-      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+      - CELERY_BROKER_URL=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@redis.railway.internal:6379/0
+      - CELERY_RESULT_BACKEND=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@redis.railway.internal:6379/0
       - TZ=EST
       - CHURN_MODEL_PATH=/app/models/churn_model_20250220_182726.pkl
       - CHURN_SCALER_PATH=/app/models/minmax_scaler.pkl
@@ -73,14 +72,6 @@ services:
       - "9001:9001"
     volumes:
       - minio-data:/data
-    networks:
-      - app-network
-
-  redis:
-    image: redis:alpine
-    container_name: redis
-    ports:
-      - "6379:6379"
     networks:
       - app-network
 
