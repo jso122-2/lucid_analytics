@@ -80,6 +80,28 @@ def get_churn_survival_artifacts():
         CHURN_COX_MODEL, CHURN_RSF_MODEL = load_churn_survival_artifacts(CHURN_COX_MODEL_PATH, CHURN_RSF_MODEL_PATH)
     return CHURN_COX_MODEL, CHURN_RSF_MODEL
 
+celery_app = Celery('tasks', broker=os.environ.get("CELERY_BROKER_URL"), backend=os.environ.get("CELERY_RESULT_BACKEND"))
+
+@celery_app.task
+def load_hand_models():
+    """
+    Fetch skeleton and flesh hand models from MinIO and return URLs.
+    """
+    from utils.minio_utils import get_presigned_url
+
+    try:
+        skeleton_model_url = get_presigned_url("skeleton_hand.glb")
+        flesh_model_url = get_presigned_url("flesh_hand.glb")
+
+        return {
+            "skeleton_model": skeleton_model_url,
+            "flesh_model": flesh_model_url
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
+
+
 @celery_app.task
 def churn_inference(task_payload: dict):
     import pickle

@@ -5,8 +5,8 @@ from tempfile import NamedTemporaryFile
 import pandas as pd
 from utils.logger_config import logger
 
-BUCKET_NAME = os.environ.get("MINIO_BUCKET", "models")
-logger.info(f"BUCKET_NAME from env: {BUCKET_NAME}")
+# Fetch MinIO credentials
+BUCKET_NAME = os.environ.get("MINIO_BUCKET", "marketing.models")
 
 s3_client = boto3.client(
     "s3",
@@ -15,6 +15,20 @@ s3_client = boto3.client(
     aws_secret_access_key=os.environ.get("MINIO_SECRET_KEY", "minioadmin"),
     region_name="us-east-1",
 )
+
+def download_hand_model(model_name):
+    """
+    Download skeleton or flesh hand model from MinIO and return local file path.
+    """
+    try:
+        temp_file = NamedTemporaryFile(delete=False, suffix=".glb")
+        s3_client.download_file(BUCKET_NAME, model_name, temp_file.name)
+        logger.info(f"✅ Downloaded {model_name} from MinIO to {temp_file.name}")
+        return temp_file.name
+    except ClientError as e:
+        logger.error(f"❌ Error downloading {model_name}: {e}")
+        raise FileNotFoundError(f"❌ Unable to download {model_name} from MinIO")
+
 
 def download_model_from_minio(object_key):
     """
