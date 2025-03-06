@@ -1,8 +1,8 @@
 import os
 import sys
 import asyncio
-import joblib
 import pickle
+import joblib
 import pandas as pd
 from celery import Celery
 from xgboost import XGBClassifier
@@ -12,7 +12,17 @@ from config import (
     NPS_MODEL_PATH, NPS_SCALER_PATH, MEDIA_MODEL_PATH, MEDIA_SCALER_PATH,
     CHURN_COX_MODEL_PATH, CHURN_RSF_MODEL_PATH, CHURN_SURVIVAL_SCALER_PATH
 )
+from utils.minio_utils import get_presigned_url
+from utils.model_utils import (
+    load_churn_artifacts as util_load_churn_artifacts,
+    load_nps_artifacts as util_load_nps_artifacts,
+    load_media_artifacts as util_load_media_artifacts,
+    load_churn_survival_artifacts,
+    load_inference_features,
+    load_representative_sample
+)
 
+# Set the asyncio event loop policy for Windows, if needed.
 if sys.platform.startswith("win"):
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
@@ -27,11 +37,10 @@ if os.path.exists("/app/models"):
     os.environ["CHURN_COX_MODEL_PATH"] = "/app/models/churn_cox_model_20250225_172025.pkl"
     os.environ["CHURN_RSF_MODEL_PATH"] = "/app/models/churn_rsf_model.pkl"
 
+# Configure Celery using a single instance.
 broker_url = os.environ.get("CELERY_BROKER_URL", "redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0")
 result_backend = os.environ.get("CELERY_RESULT_BACKEND", "redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0")
-
 celery_app = Celery('tasks', broker=broker_url, backend=result_backend)
-
 celery_app.conf.update(
     task_serializer="json",
     accept_content=["json"],
@@ -40,7 +49,7 @@ celery_app.conf.update(
     enable_utc=True,
 )
 
-# Global Variables for lazy loading
+# Global variables for lazy loading of models and scalers.
 CHURN_MODEL = None
 CHURN_SCALER = None
 NPS_MODEL = None
@@ -52,47 +61,43 @@ CHURN_RSF_MODEL = None
 
 BASE_PATH = os.path.join(os.getcwd(), "models")
 
+
 def get_churn_artifacts():
     global CHURN_MODEL, CHURN_SCALER
     if CHURN_MODEL is None or CHURN_SCALER is None:
-        from utils.model_utils import load_churn_artifacts as util_load_churn_artifacts
         CHURN_MODEL, CHURN_SCALER = util_load_churn_artifacts(MODEL_PATH, SCALER_PATH)
     return CHURN_MODEL, CHURN_SCALER
+
 
 def get_nps_artifacts():
     global NPS_MODEL, NPS_SCALER
     if NPS_MODEL is None or NPS_SCALER is None:
-        from utils.model_utils import load_nps_artifacts as util_load_nps_artifacts
         NPS_MODEL, NPS_SCALER = util_load_nps_artifacts(NPS_MODEL_PATH, NPS_SCALER_PATH)
     return NPS_MODEL, NPS_SCALER
+
 
 def get_media_artifacts():
     global MEDIA_MODEL, MEDIA_SCALER
     if MEDIA_MODEL is None or MEDIA_SCALER is None:
-        from utils.model_utils import load_media_artifacts as util_load_media_artifacts
         MEDIA_MODEL, MEDIA_SCALER = util_load_media_artifacts(MEDIA_MODEL_PATH, MEDIA_SCALER_PATH)
     return MEDIA_MODEL, MEDIA_SCALER
+
 
 def get_churn_survival_artifacts():
     global CHURN_COX_MODEL, CHURN_RSF_MODEL
     if CHURN_COX_MODEL is None or CHURN_RSF_MODEL is None:
-        from utils.model_utils import load_churn_survival_artifacts
         CHURN_COX_MODEL, CHURN_RSF_MODEL = load_churn_survival_artifacts(CHURN_COX_MODEL_PATH, CHURN_RSF_MODEL_PATH)
     return CHURN_COX_MODEL, CHURN_RSF_MODEL
 
-celery_app = Celery('tasks', broker=os.environ.get("CELERY_BROKER_URL"), backend=os.environ.get("CELERY_RESULT_BACKEND"))
 
 @celery_app.task
 def load_hand_models():
     """
-    Fetch skeleton and flesh hand models from MinIO and return URLs.
+    Fetch skeleton and flesh hand models from MinIO and return their presigned URLs.
     """
-    from utils.minio_utils import get_presigned_url
-
     try:
         skeleton_model_url = get_presigned_url("skeleton_hand.glb")
         flesh_model_url = get_presigned_url("flesh_hand.glb")
-
         return {
             "skeleton_model": skeleton_model_url,
             "flesh_model": flesh_model_url
@@ -101,39 +106,27 @@ def load_hand_models():
         return {"error": str(e)}
 
 
-
 @celery_app.task
 def churn_inference(task_payload: dict):
-    import pickle
-    from utils.model_utils import load_churn_artifacts, load_inference_features
-    import joblib  # for loading scalers
     global CHURN_MODEL, CHURN_SCALER
-
-    # 1) Load classification model and scaler if needed.
+    # 1) Load the churn classification model and its scaler if needed.
     if CHURN_MODEL is None or CHURN_SCALER is None:
-        CHURN_MODEL, CHURN_SCALER = load_churn_artifacts(
-            task_payload.get("model_path"),
-            task_payload.get("scaler_path")
+        CHURN_MODEL, CHURN_SCALER = util_load_churn_artifacts(
+            task_payload.get("model_path", MODEL_PATH),
+            task_payload.get("scaler_path", SCALER_PATH)
         )
     
-    # 2) Load the survival model and its dedicated scaler.
-    from config import CHURN_COX_MODEL_PATH, CHURN_SURVIVAL_SCALER_PATH, INFERENCE_FEATURES_SURVIVAL_PATH
+    # 2) Load the survival model and its scaler.
     with open(CHURN_COX_MODEL_PATH, "rb") as f:
         survival_model = pickle.load(f)
     survival_scaler = joblib.load(CHURN_SURVIVAL_SCALER_PATH)
-    # Load the list of features that the survival model was trained on.
     survival_features = load_inference_features(INFERENCE_FEATURES_SURVIVAL_PATH)
     print("Survival inference features:", survival_features)
 
     try:
-        # -------------------------
-        # A) Classification Part
-        # -------------------------
+        # A) Classification
         input_data = task_payload.get("input_data", {})
-        # For classification, use the churn inference features from the config.
-        from config import INFERENCE_FEATURES_CHURN_PATH
         classification_features = load_inference_features(INFERENCE_FEATURES_CHURN_PATH)
-        # Build a DataFrame containing only the classification features:
         df_input_class = pd.DataFrame([{feat: input_data.get(feat, 0) for feat in classification_features}])
         print("DF for classification:", df_input_class.columns.tolist(), df_input_class.shape)
         scaled_input = CHURN_SCALER.transform(df_input_class)
@@ -145,13 +138,9 @@ def churn_inference(task_payload: dict):
             "raw_prob": churn_prob
         }
         
-        # -------------------------
-        # B) Survival Inference Part
-        # -------------------------
-        # Build a DataFrame for survival inference using only the pruned features.
+        # B) Survival Inference
         df_input_surv = pd.DataFrame([{feat: input_data.get(feat, 0) for feat in survival_features}])
         print("DF for survival inference:", df_input_surv.columns.tolist(), df_input_surv.head())
-        # Scale the survival features using the dedicated survival scaler.
         df_input_surv_scaled = pd.DataFrame(survival_scaler.transform(df_input_surv), columns=survival_features)
         print("DF for survival inference (after scaling):", df_input_surv_scaled.head())
         survival_function = survival_model.predict_survival_function(df_input_surv_scaled)
@@ -165,6 +154,7 @@ def churn_inference(task_payload: dict):
 
     except Exception as e:
         return {"error": str(e)}
+
 
 @celery_app.task
 def nps_inference(input_data: dict):
@@ -186,6 +176,7 @@ def nps_inference(input_data: dict):
     except Exception as e:
         return {"error": str(e)}
 
+
 @celery_app.task
 def media_inference(input_data: dict):
     try:
@@ -200,6 +191,7 @@ def media_inference(input_data: dict):
     except Exception as e:
         return {"error": str(e)}
 
+
 @celery_app.task
 def load_all_models():
     results = {
@@ -209,10 +201,10 @@ def load_all_models():
     }
     return results
 
+
 @celery_app.task
 def load_churn_resources():
     try:
-        from utils.model_utils import load_inference_features, load_representative_sample
         features = load_inference_features(os.path.join(BASE_PATH, "inference_features_churn.txt"))
         rep_sample = load_representative_sample(os.path.join(BASE_PATH, "churn_representative_sample.csv"))
         return {
@@ -222,10 +214,10 @@ def load_churn_resources():
     except Exception as e:
         return {"error": str(e)}
 
+
 @celery_app.task
 def load_nps_resources():
     try:
-        from utils.model_utils import load_representative_sample
         rep_sample = load_representative_sample(os.path.join(BASE_PATH, "nps_representative_sample.csv"))
         training_df = pd.read_csv(os.path.join(BASE_PATH, "training", "synthetic_media_data.csv"))
         training_data = training_df.to_json(orient="records")

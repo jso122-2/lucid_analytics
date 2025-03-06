@@ -6,10 +6,9 @@ import { OrbitControls } from "./OrbitControls.js";
 import { gsap } from "https://cdn.skypack.dev/gsap";
 import anime from "https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js";
 
-// Use the injected MINIO_BASE_URL or fallback.
-const minioBase =
-  window.MINIO_BASE_URL || "http://127.0.0.1:9000/marketing.models/models/";
-console.log("minioBase:", minioBase);
+// Use the injected MINIO_BASE_URL (assumed to be set in base.html)
+const minioBase = window.MINIO_BASE_URL;
+console.log("MINIO_BASE_URL from window:", minioBase);
 
 // Global variables.
 let scene, renderer, controls;
@@ -20,15 +19,10 @@ let isSequenceActive = false;
 let currentArticleIndex = 0;
 let currentModel = "skeleton"; // "skeleton" or "flesh"
 
-// Updated paragraphs with full text, typed out at GPT-4 style speed.
+// Full explanatory text paragraphs.
 const explanatoryTexts = [
-  // Paragraph 1
   "Data alone is like the bones of a skeleton—structured, essential, but incomplete. Just as bones provide the foundation for movement and strength, raw data offers the fundamental building blocks for insights and decisions. Yet, without analysis, interpretation, and context, data remains inert, waiting for life to be breathed into it.",
-  
-  // Paragraph 2
   "Enter transformation. When we apply sophisticated machine learning models to this skeletal structure, it’s as if we're layering muscle, skin, and flesh onto bare bones. Each algorithm, each statistical technique, adds detail and vitality, transforming raw information into meaningful, actionable insights—bringing our skeleton vividly to life.",
-  
-  // Paragraph 3
   "Hit the Transform button and watch as we shift from a stark frame of possibilities to a living, breathing body of knowledge, powered by intelligence, ready to engage and respond dynamically to the world around it."
 ];
 
@@ -50,17 +44,6 @@ function setModelMaterialsTransparent(model) {
   });
 }
 
-
-// Usage in render function
-loadHandModels().then(models => {
-    if (models) {
-        console.log("Rendering skeleton:", models.skeleton);
-        console.log("Rendering flesh:", models.flesh);
-    }
-});
-
-
-// Updated crossFadeModelOpacity is unchanged.
 function crossFadeModelOpacity(model, startOpacity, endOpacity, duration, onComplete) {
   let count = 0;
   const materials = [];
@@ -90,39 +73,122 @@ function crossFadeModelOpacity(model, startOpacity, endOpacity, duration, onComp
 }
 
 //
+// Async Model Loader (Promise wrapper for GLTFLoader)
+//
+function loadModel(url) {
+  return new Promise((resolve, reject) => {
+    const loader = new GLTFLoader();
+    loader.load(
+      url,
+      (gltf) => resolve(gltf),
+      undefined,
+      (error) => reject(error)
+    );
+  });
+}
+
+//
+// Celery-based Hand Model Loading Logic
+//
+async function fetchHandModelsFromCelery() {
+  try {
+    let response = await fetch("/celery-task/load_hand_models", { method: "POST" });
+    let taskData = await response.json();
+    if (!taskData.task_id) {
+      throw new Error("Failed to trigger Celery task.");
+    }
+    console.log("📢 Celery task triggered:", taskData.task_id);
+    let taskResult;
+    while (true) {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      response = await fetch(`/celery-task/status/${taskData.task_id}`);
+      taskResult = await response.json();
+      if (taskResult.status === "SUCCESS") {
+        console.log("✅ Celery task completed:", taskResult.result);
+        return taskResult.result;
+      }
+      if (taskResult.status === "FAILURE") {
+        throw new Error("Celery task failed.");
+      }
+      console.log("⏳ Waiting for Celery task to complete...");
+    }
+  } catch (error) {
+    console.error("❌ Error loading hand models from Celery:", error);
+    return null;
+  }
+}
+
+async function loadHandModels() {
+  const models = await fetchHandModelsFromCelery();
+  // If the Celery task fails or returns an error, use fallback proxy URLs.
+  if (!models || models.error) {
+    console.error("❌ Failed to fetch hand models from Celery. Using fallback proxy URLs.");
+    return {
+      skeleton_model: window.location.origin + "/proxy/skeleton_hand.glb",
+      flesh_model: window.location.origin + "/proxy/flesh_hand.glb"
+    };
+  }
+  return models;
+}
+
+async function loadHandAssets() {
+  const models = await loadHandModels();
+  if (!models) return;
+
+  try {
+    const gltfSkeleton = await loadModel(models.skeleton_model);
+    skeletonHand = gltfSkeleton.scene;
+    skeletonHand.position.set(-0.3, -1, 0);
+    skeletonHand.rotation.set(-Math.PI / 2, 0, 0);
+    skeletonHand.scale.set(1.2, 1.2, 1.2);
+    setModelMaterialsTransparent(skeletonHand);
+    skeletonHand.visible = true;
+    scene.add(skeletonHand);
+    console.log("✅ Skeleton hand dynamically loaded.");
+  } catch (error) {
+    console.error("❌ Error loading skeleton hand:", error);
+  }
+
+  try {
+    const gltfFlesh = await loadModel(models.flesh_model);
+    fleshHand = gltfFlesh.scene;
+    fleshHand.position.set(0, -1, 0);
+    fleshHand.scale.set(2, 2, 2);
+    fleshHand.rotation.set(-1.0472, -0.8727, 0);
+    setModelMaterialsTransparent(fleshHand);
+    fleshHand.visible = false;
+    scene.add(fleshHand);
+    console.log("✅ Flesh hand dynamically loaded.");
+  } catch (error) {
+    console.error("❌ Error loading flesh hand:", error);
+  }
+}
+
+//
 // Transform Sequence Logic
 //
-
-// Modified showArticle for a typed-out effect
 function showArticle(index, onComplete) {
   const text = explanatoryTexts[index];
   articleContainer.innerHTML = "";
   articleContainer.style.opacity = 1;
-
-  // We'll approximate a typing effect: e.g., 30 characters per second.
-  // So total duration = text.length / 30 (seconds).
   const typingSpeedCharsPerSecond = 30;
   const typingDuration = text.length / typingSpeedCharsPerSecond;
-
   let progressObj = { progress: 0 };
   gsap.to(progressObj, {
     duration: typingDuration,
     progress: text.length,
     ease: "none",
     onUpdate: () => {
-      // Show only up to the current 'progress' index of the string
       articleContainer.innerText = text.substring(0, Math.floor(progressObj.progress));
     },
-    onComplete
-  }).eventCallback("onComplete", onComplete);
+    onComplete: onComplete
+  });
 }
 
 function onTransformClick() {
   console.log("Transform button pressed.");
   if (isSequenceActive) return;
   isSequenceActive = true;
-
-  // If there's a permanent prompt, remove it (if it was ever created).
   const promptDiv = document.getElementById("permanent-prompt");
   if (promptDiv) promptDiv.remove();
 
@@ -157,11 +223,8 @@ function onTransformClick() {
       opacity: 0,
       onComplete: () => {
         articleContainer.innerHTML = "";
-        // Remove the transform button permanently.
         const transformBtn = document.getElementById("transform-btn");
-        if (transformBtn) {
-          transformBtn.remove();
-        }
+        if (transformBtn) transformBtn.remove();
         if (currentModel === "skeleton") {
           transitionToFleshHand(() => {
             currentModel = "flesh";
@@ -229,7 +292,7 @@ function init() {
   scene = new THREE.Scene();
   const aspect = container.clientWidth / container.clientHeight;
 
-  // Skeleton camera
+  // Skeleton camera (Orthographic)
   cameraSkeleton = new THREE.OrthographicCamera(
     (-10 * aspect) / 2,
     (10 * aspect) / 2,
@@ -243,7 +306,7 @@ function init() {
   cameraSkeleton.updateProjectionMatrix();
   cameraSkeleton.lookAt(0, -1, 0);
 
-  // Flesh camera
+  // Flesh camera (Perspective)
   cameraFlesh = new THREE.PerspectiveCamera(50, aspect, 0.1, 1000);
   cameraFlesh.position.set(6.044, 5.594, 3.16);
   cameraFlesh.lookAt(0, -1, 0);
@@ -280,7 +343,7 @@ function init() {
     bottom: "170px",
     left: "10px",
     fontSize: "1rem",
-    color: "#fff", // White text
+    color: "#fff",
     fontWeight: "bold",
     zIndex: "10002"
   });
@@ -305,92 +368,28 @@ function init() {
   pointLight.position.set(5, 5, 5);
   scene.add(pointLight);
 
-  async function fetchHandModelsFromCelery() {
-    try {
-        // Step 1: Trigger Celery Task
-        let response = await fetch("/celery-task/load_hand_models", {
-            method: "POST",
-        });
-        let taskData = await response.json();
-        if (!taskData.task_id) {
-            throw new Error("❌ Failed to trigger Celery task.");
-        }
+  // Create an article container for transform text.
+  articleContainer = document.createElement("div");
+  articleContainer.id = "article-container";
+  Object.assign(articleContainer.style, {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "60%",
+    color: "#fff",
+    fontSize: "2rem",
+    textAlign: "center",
+    zIndex: "10000",
+    pointerEvents: "none",
+    opacity: 0
+  });
+  container.appendChild(articleContainer);
 
-        console.log("📢 Celery task triggered:", taskData.task_id);
+  // Load hand models asynchronously (via Celery task or fallback).
+  loadHandAssets();
 
-        // Step 2: Poll Celery Task Status Until Completion
-        let taskResult;
-        while (true) {
-            await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait 2 sec before retrying
-            response = await fetch(`/celery-task/status/${taskData.task_id}`);
-            taskResult = await response.json();
-
-            if (taskResult.status === "SUCCESS") {
-                console.log("✅ Celery task completed:", taskResult.result);
-                return taskResult.result;
-            }
-            if (taskResult.status === "FAILURE") {
-                throw new Error("❌ Celery task failed.");
-            }
-            console.log("⏳ Waiting for Celery task to complete...");
-        }
-    } catch (error) {
-        console.error("❌ Error loading hand models from Celery:", error);
-        return null;
-    }
-}
-
-
-async function loadHandModels() {
-    const models = await fetchHandModelsFromCelery();
-    if (!models) {
-        console.error("❌ Failed to fetch hand models from Celery. Using fallback MinIO URLs.");
-        return {
-            skeleton: minioBase + "skeleton_hand.glb",
-            flesh: minioBase + "flesh_hand.glb"
-        };
-    }
-    return models;
-}
-
-// Dynamically Load 3D Models
-async function loadHandAssets() {
-    const models = await loadHandModels();
-    if (!models) return;
-
-    const loader = new GLTFLoader();
-
-    // Load Skeleton Hand
-    loader.load(models.skeleton, (gltf) => {
-        skeletonHand = gltf.scene;
-        skeletonHand.position.set(-0.3, -1, 0);
-        skeletonHand.rotation.set(-Math.PI / 2, 0, 0);
-        skeletonHand.scale.set(1.2, 1.2, 1.2);
-        setModelMaterialsTransparent(skeletonHand);
-        skeletonHand.visible = true;
-        scene.add(skeletonHand);
-        console.log("✅ Skeleton hand dynamically loaded from Celery.");
-    }, undefined, (error) => console.error("❌ Error loading skeleton hand:", error));
-
-    // Load Flesh Hand
-    loader.load(models.flesh, (gltf) => {
-        fleshHand = gltf.scene;
-        fleshHand.position.set(0, -1, 0);
-        fleshHand.scale.set(2, 2, 2);
-        fleshHand.rotation.set(-1.0472, -0.8727, 0);
-        setModelMaterialsTransparent(fleshHand);
-        fleshHand.visible = false;
-        scene.add(fleshHand);
-        console.log("✅ Flesh hand dynamically loaded from Celery.");
-    }, undefined, (error) => console.error("❌ Error loading flesh hand:", error));
-}
-
-// Call the function to load models
-loadHandAssets();
-
-  // No permanent prompt creation. (Removed createPermanentPrompt())
-
-  // Optionally load particles.js if needed
+  // Optionally load particles.js if needed.
   if (typeof particlesJS !== "undefined") {
     particlesJS.load("particles-js", "/static/assets/particlesjs-config.json", function() {
       console.log("particles.js configuration loaded");

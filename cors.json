@@ -1,0 +1,9 @@
+[
+  {
+    "AllowedOrigin": ["*"],
+    "AllowedMethod": ["GET"],
+    "AllowedHeader": ["*"],
+    "ExposeHeader": [],
+    "MaxAgeSeconds": 3000
+  }
+]
