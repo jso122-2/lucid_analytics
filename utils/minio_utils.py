@@ -10,8 +10,9 @@ BUCKET_NAME = os.environ.get("MINIO_BUCKET", "marketing.models")
 
 def get_s3_client():
     endpoint = os.environ.get("MINIO_ENDPOINT", os.environ.get("MINIO_BASE_URL", "minio:9000"))
-    logger.info(f"[DEBUG] Using MINIO_ENDPOINT: {endpoint}")
-    use_ssl = os.environ.get("MINIO_USE_SSL", "false").lower() == "true"
+    use_ssl_str = os.environ.get("MINIO_USE_SSL", "false").strip()
+    logger.info(f"[DEBUG] MINIO_ENDPOINT: {endpoint}, MINIO_USE_SSL: {use_ssl_str}")
+    use_ssl = use_ssl_str.lower() == "true"
     protocol = "https" if use_ssl else "http"
     return boto3.client(
         "s3",
@@ -20,6 +21,7 @@ def get_s3_client():
         aws_secret_access_key=os.environ.get("MINIO_SECRET_KEY", "minioadmin"),
         region_name="us-east-1",
     )
+
 
 def download_hand_model(model_name: str) -> str:
     try:
@@ -43,19 +45,24 @@ def download_model_from_minio(object_key: str) -> str:
         raise FileNotFoundError(error_message)
 
 def get_presigned_url(object_key: str, expiration: int = 3600) -> str:
+    # Prepend the object prefix if defined.
+    object_prefix = os.environ.get("MINIO_OBJECT_PREFIX", "")
+    full_key = f"{object_prefix}{object_key}" if object_prefix else object_key
     try:
         client = get_s3_client()
         url = client.generate_presigned_url(
             "get_object",
-            Params={"Bucket": BUCKET_NAME, "Key": object_key},
+            Params={"Bucket": BUCKET_NAME, "Key": full_key},
             ExpiresIn=expiration
         )
-        logger.info(f"Generated presigned URL for {object_key}: {url}")
+        logger.info(f"Generated presigned URL for {full_key}: {url}")
         return url
     except ClientError as e:
-        error_message = f"Unable to generate presigned URL for {object_key}: {e}"
+        error_message = f"Unable to generate presigned URL for {full_key}: {e}"
         logger.error(error_message)
         raise e
+
+
 
 def get_hand_models(expiration: int = 3600) -> dict:
     try:

@@ -231,3 +231,37 @@
 2025-03-06 14:12:14,779 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=E%2BrAbzGWYi2Ua4XM6aSu9qkwIjk%3D&Expires=1741234334
 2025-03-06 14:12:14,780 - my_app - INFO - [DEBUG] Using MINIO_ENDPOINT: minio:9000
 2025-03-06 14:12:14,785 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=Cu2IagZquCvnVxePdq6m%2BySr%2FHA%3D&Expires=1741234334
+2025-03-06 14:50:39,005 - my_app - INFO - [DEBUG] Using MINIO_ENDPOINT: minio:9000
+2025-03-06 14:50:39,465 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=2nOIpOX6i6m4Z%2BY8lwpcVg43SeM%3D&Expires=1741236639
+2025-03-06 14:50:39,466 - my_app - INFO - [DEBUG] Using MINIO_ENDPOINT: minio:9000
+2025-03-06 14:50:39,471 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=kRkcqpDV07dk3HfbGyybF4ZKSzU%3D&Expires=1741236639
+2025-03-05 22:52:39,091 - my_app - INFO - [DEBUG] Using MINIO_ENDPOINT: http://minio:9000
+2025-03-05 22:52:39,413 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://http:/minio%3A9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=iiQziT9Z1u%2B4Jv1ZnhOc67g9xgw%3D&Expires=1741236759
+2025-03-05 22:52:39,413 - my_app - INFO - [DEBUG] Using MINIO_ENDPOINT: http://minio:9000
+2025-03-05 22:52:39,421 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://http:/minio%3A9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=nCNxiahOecClfLpQ8c8EjmLEg8I%3D&Expires=1741236759
+2025-03-05 22:52:40,878 - my_app - INFO - [DEBUG] Using MINIO_ENDPOINT: http://minio:9000
+2025-03-05 22:52:41,902 - my_app - INFO - [DEBUG] Using MINIO_ENDPOINT: http://minio:9000
+2025-03-05 22:52:43,391 - my_app - INFO - [DEBUG] Using MINIO_ENDPOINT: http://minio:9000
+2025-03-06 14:56:38,582 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
+2025-03-06 14:56:38,813 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=4zSHo6na5T941zdl6FavjGNXxQ0%3D&Expires=1741236998
+2025-03-06 14:56:38,813 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
+2025-03-06 14:56:38,819 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=t4mzGBS2w5Wvqr%2Bm%2BnEGrLKOphI%3D&Expires=1741236998
+2025-03-05 22:57:54,893 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: lucidanalytics-production.up.railway.app, MINIO_USE_SSL: true
+2025-03-05 22:57:55,204 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: https://lucidanalytics-production.up.railway.app/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=eBjhTzLhzu3bE6kzXSJHzrmknEI%3D&Expires=1741237075
+2025-03-06 15:00:53,215 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
+2025-03-06 15:00:53,519 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=9fiwycHV88dMqYO8CssFkFKMXzs%3D&Expires=1741237253
+2025-03-06 15:00:53,520 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
+2025-03-06 15:00:53,529 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=ubPcQcrZ8GqyzIdD2xC%2B5fMCDog%3D&Expires=1741237253
+2025-03-05 23:01:11,621 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: lucidanalytics-production.up.railway.app, MINIO_USE_SSL: true
+2025-03-05 23:01:11,796 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: https://lucidanalytics-production.up.railway.app/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=fT9ynawdpfYD3sv3P2BFq9KAJ8Q%3D&Expires=1741237271
+2025-03-05 23:03:53,581 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: lucidanalytics-production.up.railway.app, MINIO_USE_SSL: true
+2025-03-05 23:03:53,851 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: https://lucidanalytics-production.up.railway.app/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=Udrfs4LByXoeBi5MQdp8twM6968%3D&Expires=1741237433
+2025-03-05 23:07:10,144 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: lucidanalytics-production.up.railway.app, MINIO_USE_SSL: true
+2025-03-05 23:07:10,389 - my_app - INFO - Generated presigned URL for models/skeleton_hand.glb: https://lucidanalytics-production.up.railway.app/marketing.models/models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=J09ULTPQYT%2BgLTuGCm1uM5dlKhE%3D&Expires=1741237630
+2025-03-05 23:07:21,523 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: lucidanalytics-production.up.railway.app, MINIO_USE_SSL: true
+2025-03-05 23:07:21,660 - my_app - INFO - Generated presigned URL for models/skeleton_hand.glb: https://lucidanalytics-production.up.railway.app/marketing.models/models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=7HkCr9tijvEpw%2BdfXW%2BhH4R0gn4%3D&Expires=1741237641
+2025-03-06 15:08:49,645 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
+2025-03-06 15:08:49,871 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=VLV94QhHIIUXvbVj7KCifkLvVm4%3D&Expires=1741237729
+2025-03-06 15:08:49,871 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
+2025-03-06 15:08:49,877 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=J6ecYDoWvuhV2Pqt%2FATX9jAbfvI%3D&Expires=1741237729
+2025-03-06 15:08:58,458 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
