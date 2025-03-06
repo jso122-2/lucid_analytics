@@ -87,49 +87,31 @@ function loadModel(url) {
   });
 }
 
-//
-// Celery-based Hand Model Loading Logic
-//
-async function fetchHandModelsFromCelery() {
-  try {
-    let response = await fetch("/celery-task/load_hand_models", { method: "POST" });
-    let taskData = await response.json();
-    if (!taskData.task_id) {
-      throw new Error("Failed to trigger Celery task.");
+// Replace the old Celery-based fetch function with this:
+async function fetchHandModels() {
+    try {
+      let response = await fetch("/hand-models", { method: "GET" });
+      let models = await response.json();
+      console.log("✅ Hand models loaded:", models);
+      return models;
+    } catch (error) {
+      console.error("❌ Error loading hand models:", error);
+      return null;
     }
-    console.log("📢 Celery task triggered:", taskData.task_id);
-    let taskResult;
-    while (true) {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      response = await fetch(`/celery-task/status/${taskData.task_id}`);
-      taskResult = await response.json();
-      if (taskResult.status === "SUCCESS") {
-        console.log("✅ Celery task completed:", taskResult.result);
-        return taskResult.result;
-      }
-      if (taskResult.status === "FAILURE") {
-        throw new Error("Celery task failed.");
-      }
-      console.log("⏳ Waiting for Celery task to complete...");
+  }
+  
+  async function loadHandModels() {
+    const models = await fetchHandModels();
+    if (!models || models.error) {
+      console.error("❌ Failed to fetch hand models. Using fallback proxy URLs.");
+      return {
+        skeleton_model: window.location.origin + "/proxy/skeleton_hand.glb",
+        flesh_model: window.location.origin + "/proxy/flesh_hand.glb"
+      };
     }
-  } catch (error) {
-    console.error("❌ Error loading hand models from Celery:", error);
-    return null;
+    return models;
   }
-}
-
-async function loadHandModels() {
-  const models = await fetchHandModelsFromCelery();
-  // If the Celery task fails or returns an error, use fallback proxy URLs.
-  if (!models || models.error) {
-    console.error("❌ Failed to fetch hand models from Celery. Using fallback proxy URLs.");
-    return {
-      skeleton_model: window.location.origin + "/proxy/skeleton_hand.glb",
-      flesh_model: window.location.origin + "/proxy/flesh_hand.glb"
-    };
-  }
-  return models;
-}
+  
 
 async function loadHandAssets() {
   const models = await loadHandModels();

@@ -191,3 +191,43 @@
 2025-03-05 04:21:01,231 - my_app - INFO - Downloaded models/inference_features_survival.txt from MinIO to temporary file /tmp/tmp7co96vgl.
 2025-03-05 04:37:33,593 - my_app - INFO - BUCKET_NAME from env: marketing.models
 2025-03-05 04:37:34,091 - my_app - INFO - Downloaded models/inference_features_survival.txt from MinIO to temporary file /tmp/tmplxka6k5d.
+2025-03-05 21:23:29,083 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=MSbu8Gu9q7wntbpb0Bf8ZxIxKTk%3D&Expires=1741231409
+2025-03-05 21:23:29,085 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=EhwXZrrJPbrEBHjw1djXQItj1uo%3D&Expires=1741231409
+2025-03-05 21:25:16,172 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=x8cy%2BTeFfzYvqnWMIUhBziapmFE%3D&Expires=1741231516
+2025-03-05 21:25:16,173 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=ND%2B%2FlnBDeYD7l3kJozGgcPT0hJ0%3D&Expires=1741231516
+2025-03-05 21:27:06,497 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=2LlBKFxy6NaVjC5SbS9smG9dMtA%3D&Expires=1741231626
+2025-03-05 21:27:06,499 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=mJEfHbBE%2F9zAiH5my%2FbxFmOkv5s%3D&Expires=1741231626
+2025-03-05 21:27:09,501 - my_app - INFO - Downloaded models/churn_model_20250225_175647.pkl from MinIO to temporary file /tmp/tmpni1588cz.
+2025-03-05 21:27:09,514 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmp946s8grn.
+2025-03-05 21:27:09,754 - my_app - INFO - Downloaded models/inference_features_survival.txt from MinIO to temporary file /tmp/tmpo_c3oz_8.
+2025-03-05 21:27:28,873 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=M1j%2F6GdgIfqL6Y%2BK4DLCNfi4Juk%3D&Expires=1741231648
+2025-03-05 21:27:28,874 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=7l3n49zDghk1QpK%2FJHPnOu2XWr0%3D&Expires=1741231648
+2025-03-06 13:33:45,584 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=YhsdXgGZEfQxznO2LJR0%2BkhIUmI%3D&Expires=1741232025
+2025-03-06 13:33:45,586 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=EVCtuXmBKf2JrKoaXj9fX%2F%2BXp2g%3D&Expires=1741232025
+2025-03-05 21:33:57,506 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=DXYbi5NU2NQ4MG1xgVtpC3Pz2uQ%3D&Expires=1741232037
+2025-03-05 21:33:57,507 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=tq0%2FDce6ekOKYKRPAHdGoXuZDHo%3D&Expires=1741232037
+2025-03-06 13:36:19,116 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=qRYbqHUrrbPUQ0QMPb11h%2B8ib2o%3D&Expires=1741232179
+2025-03-06 13:36:19,117 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=9VmKVUPj5Jt8deLiv7hhR%2F14Lho%3D&Expires=1741232179
+2025-03-06 13:39:07,664 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=Vk1IswpxbkkCirVtLFLSXt6ZKlY%3D&Expires=1741232347
+2025-03-06 13:39:07,666 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=QQtZB9lMUSiaB88EsHqmDEZzLz4%3D&Expires=1741232347
+2025-03-06 13:41:23,681 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=8kdRzOOozyVsKj%2FvbYraGVnQ3Pk%3D&Expires=1741232483
+2025-03-06 13:41:23,682 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=dh2vHHgrZWi6PUJ31mC1ZSBuMxY%3D&Expires=1741232483
+2025-03-06 13:43:39,619 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=HK9Uw5VFxisBUSdPVRI5SUJMWWY%3D&Expires=1741232619
+2025-03-06 13:43:39,620 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=2w6ezP3zy6%2BKVaQDQEoQLbk%2BINM%3D&Expires=1741232619
+2025-03-06 13:49:26,526 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=r81SYTuympZ2UfRA2iWH2X0in6c%3D&Expires=1741232966
+2025-03-06 13:49:26,529 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=dHiRa0DL%2BG2MmWseLXJXG6OEY4I%3D&Expires=1741232966
+2025-03-05 21:49:33,729 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=tkjiBQfzkGYyl5XmJKZd3XttGZ0%3D&Expires=1741232973
+2025-03-05 21:49:33,732 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=BZjh%2BiSLkFh6LFV1RPEGJEgij7o%3D&Expires=1741232973
+2025-03-05 21:49:34,831 - my_app - INFO - Downloaded models/inference_features_survival.txt from MinIO to temporary file /tmp/tmpelq15g55.
+2025-03-06 13:53:38,533 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=Mo3ZfJUYenxPw2Foo9pk8exY3Lk%3D&Expires=1741233218
+2025-03-06 13:53:38,541 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=24Ep6oInBvjIbP%2FuM1LEwVqrEK0%3D&Expires=1741233218
+2025-03-06 13:57:47,287 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=GsN5gaUowC8m8qdNor8A8l%2Fjj6k%3D&Expires=1741233467
+2025-03-06 13:57:47,293 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=lwHg3o9etSQEamm6lbE7bhbzyAo%3D&Expires=1741233467
+2025-03-06 14:09:51,033 - my_app - INFO - [DEBUG] Using MINIO_ENDPOINT: http://minio:9000
+2025-03-06 14:09:51,244 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://http:/minio%3A9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=ju8KmmfPHT0Kpq%2FtEHEoh%2FKunHA%3D&Expires=1741234191
+2025-03-06 14:09:51,245 - my_app - INFO - [DEBUG] Using MINIO_ENDPOINT: http://minio:9000
+2025-03-06 14:09:51,252 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://http:/minio%3A9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=78hKVC0lDTTf7aJOyJoT5RNatIU%3D&Expires=1741234191
+2025-03-06 14:12:14,565 - my_app - INFO - [DEBUG] Using MINIO_ENDPOINT: minio:9000
+2025-03-06 14:12:14,779 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=E%2BrAbzGWYi2Ua4XM6aSu9qkwIjk%3D&Expires=1741234334
+2025-03-06 14:12:14,780 - my_app - INFO - [DEBUG] Using MINIO_ENDPOINT: minio:9000
+2025-03-06 14:12:14,785 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=Cu2IagZquCvnVxePdq6m%2BySr%2FHA%3D&Expires=1741234334

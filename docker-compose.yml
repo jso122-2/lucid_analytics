@@ -10,17 +10,19 @@ services:
       - redis
       - minio
     environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
-      - TZ=EST
-      - CHURN_MODEL_PATH=/app/models/churn_model_20250214_154838.pkl
-      - CHURN_SCALER_PATH=/app/models/minmax_scaler.pkl
-      - NPS_MODEL_PATH=/app/models/nps_model.pkl
-      - NPS_SCALER_PATH=/app/models/nps_scaler.pkl
-      - MEDIA_MODEL_PATH=/app/models/media_model_20250219_002020.pkl
-      - MEDIA_SCALER_PATH=/app/models/standard_scaler.pkl
-      - SITE_NAME=Lucid Analytics
-      - MINIO_BASE_URL=https://lucidanalytics-production.up.railway.app/marketing.models/models/
+      CELERY_BROKER_URL: "redis://redis:6379/0"
+      CELERY_RESULT_BACKEND: "redis://redis:6379/0"
+      TZ: "EST"
+      CHURN_MODEL_PATH: "/app/models/churn_model_20250214_154838.pkl"
+      CHURN_SCALER_PATH: "/app/models/minmax_scaler.pkl"
+      NPS_MODEL_PATH: "/app/models/nps_model.pkl"
+      NPS_SCALER_PATH: "/app/models/nps_scaler.pkl"
+      MEDIA_MODEL_PATH: "/app/models/media_model_20250219_002020.pkl"
+      MEDIA_SCALER_PATH: "/app/models/standard_scaler.pkl"
+      SITE_NAME: "Lucid Analytics"
+      MINIO_BASE_URL: "https://lucidanalytics-production.up.railway.app/marketing.models/models/"
+      MINIO_ENDPOINT: "lucidanalytics-production.up.railway.app"
+      MINIO_USE_SSL: "true"
     volumes:
       - .:/app
       - /etc/localtime:/etc/localtime:ro
@@ -37,21 +39,21 @@ services:
       - minio
       - redis
     environment:
-      - CELERY_BROKER_URL=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0
-      - CELERY_RESULT_BACKEND=redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0
-      - TZ=EST
-      - CHURN_MODEL_PATH=/app/models/churn_model_20250220_182726.pkl
-      - CHURN_SCALER_PATH=/app/models/minmax_scaler.pkl
-      - NPS_MODEL_PATH=/app/models/nps_model.pkl
-      - NPS_SCALER_PATH=/app/models/nps_scaler.pkl
-      - MEDIA_MODEL_PATH=/app/models/media_model_20250219_002020.pkl
-      - MEDIA_SCALER_PATH=/app/models/standard_scaler.pkl
-      - MINIO_ENDPOINT=http://minio:9000
-      - MINIO_ACCESS_KEY=minioadmin
-      - MINIO_SECRET_KEY=minioadmin
-      - MINIO_BUCKET=marketing.models
-      - MINIO_OBJECT_PREFIX=models/
-      - SITE_NAME=Lucid Analytics
+      CELERY_BROKER_URL: "redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0"
+      CELERY_RESULT_BACKEND: "redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0"
+      TZ: "EST"
+      CHURN_MODEL_PATH: "/app/models/churn_model_20250220_182726.pkl"
+      CHURN_SCALER_PATH: "/app/models/minmax_scaler.pkl"
+      NPS_MODEL_PATH: "/app/models/nps_model.pkl"
+      NPS_SCALER_PATH: "/app/models/nps_scaler.pkl"
+      MEDIA_MODEL_PATH: "/app/models/media_model_20250219_002020.pkl"
+      MEDIA_SCALER_PATH: "/app/models/standard_scaler.pkl"
+      MINIO_ENDPOINT: "http://minio:9000"
+      MINIO_ACCESS_KEY: "minioadmin"
+      MINIO_SECRET_KEY: "minioadmin"
+      MINIO_BUCKET: "marketing.models"
+      MINIO_OBJECT_PREFIX: "models/"
+      SITE_NAME: "Lucid Analytics"
     volumes:
       - .:/app
       - /etc/localtime:/etc/localtime:ro
@@ -63,12 +65,12 @@ services:
     image: minio/minio
     container_name: minio
     environment:
-      - MINIO_ENDPOINT=http://minio:9000
-      - MINIO_ACCESS_KEY=minioadmin
-      - MINIO_SECRET_KEY=minioadmin
-      - MINIO_BUCKET=marketing.models
-      - MINIO_BASE_URL=https://lucidanalytics-production.up.railway.app/marketing.models/models/
-      - MINIO_OBJECT_PREFIX=models/
+      MINIO_ENDPOINT: "lucidanalytics-production.up.railway.app"
+      MINIO_ACCESS_KEY: "minioadmin"
+      MINIO_SECRET_KEY: "minioadmin"
+      MINIO_BUCKET: "marketing.models"
+      MINIO_BASE_URL: "https://lucidanalytics-production.up.railway.app/marketing.models/models/"
+      MINIO_OBJECT_PREFIX: "models/"
     command: server /data --console-address ":9001"
     ports:
       - "9000:9000"

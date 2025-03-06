@@ -8,36 +8,33 @@ from utils.logger_config import logger
 # Fetch MinIO credentials
 BUCKET_NAME = os.environ.get("MINIO_BUCKET", "marketing.models")
 
-s3_client = boto3.client(
-    "s3",
-    endpoint_url=os.environ.get("MINIO_ENDPOINT", "http://minio:9000"),
-    aws_access_key_id=os.environ.get("MINIO_ACCESS_KEY", "minioadmin"),
-    aws_secret_access_key=os.environ.get("MINIO_SECRET_KEY", "minioadmin"),
-    region_name="us-east-1",
-)
+def get_s3_client():
+    endpoint = os.environ.get("MINIO_ENDPOINT", os.environ.get("MINIO_BASE_URL", "minio:9000"))
+    logger.info(f"[DEBUG] Using MINIO_ENDPOINT: {endpoint}")
+    use_ssl = os.environ.get("MINIO_USE_SSL", "false").lower() == "true"
+    protocol = "https" if use_ssl else "http"
+    return boto3.client(
+        "s3",
+        endpoint_url=f"{protocol}://{endpoint}",
+        aws_access_key_id=os.environ.get("MINIO_ACCESS_KEY", "minioadmin"),
+        aws_secret_access_key=os.environ.get("MINIO_SECRET_KEY", "minioadmin"),
+        region_name="us-east-1",
+    )
 
-def download_hand_model(model_name):
-    """
-    Download skeleton or flesh hand model from MinIO and return local file path.
-    """
+def download_hand_model(model_name: str) -> str:
     try:
         temp_file = NamedTemporaryFile(delete=False, suffix=".glb")
-        s3_client.download_file(BUCKET_NAME, model_name, temp_file.name)
+        get_s3_client().download_file(BUCKET_NAME, model_name, temp_file.name)
         logger.info(f"✅ Downloaded {model_name} from MinIO to {temp_file.name}")
         return temp_file.name
     except ClientError as e:
         logger.error(f"❌ Error downloading {model_name}: {e}")
         raise FileNotFoundError(f"❌ Unable to download {model_name} from MinIO")
 
-
-def download_model_from_minio(object_key):
-    """
-    Download a file from MinIO using the provided object key and return the local temporary filename.
-    If the file cannot be downloaded, raise a FileNotFoundError with details.
-    """
+def download_model_from_minio(object_key: str) -> str:
     try:
         temp_file = NamedTemporaryFile(delete=False)
-        s3_client.download_file(BUCKET_NAME, object_key, temp_file.name)
+        get_s3_client().download_file(BUCKET_NAME, object_key, temp_file.name)
         logger.info(f"Downloaded {object_key} from MinIO to temporary file {temp_file.name}.")
         return temp_file.name
     except ClientError as e:
@@ -45,13 +42,10 @@ def download_model_from_minio(object_key):
         logger.error(error_message)
         raise FileNotFoundError(error_message)
 
-def get_presigned_url(object_key, expiration=3600):
-    """
-    Generate a pre-signed URL for the given object in MinIO.
-    This URL can be used by the client to directly access the asset.
-    """
+def get_presigned_url(object_key: str, expiration: int = 3600) -> str:
     try:
-        url = s3_client.generate_presigned_url(
+        client = get_s3_client()
+        url = client.generate_presigned_url(
             "get_object",
             Params={"Bucket": BUCKET_NAME, "Key": object_key},
             ExpiresIn=expiration
@@ -61,4 +55,17 @@ def get_presigned_url(object_key, expiration=3600):
     except ClientError as e:
         error_message = f"Unable to generate presigned URL for {object_key}: {e}"
         logger.error(error_message)
+        raise e
+
+def get_hand_models(expiration: int = 3600) -> dict:
+    try:
+        skeleton_model_url = get_presigned_url("skeleton_hand.glb", expiration)
+        flesh_model_url = get_presigned_url("flesh_hand.glb", expiration)
+        logger.info("Successfully generated pre-signed URLs for both hand models.")
+        return {
+            "skeleton_model": skeleton_model_url,
+            "flesh_model": flesh_model_url
+        }
+    except Exception as e:
+        logger.error("Error generating hand model URLs: %s", e)
         raise e

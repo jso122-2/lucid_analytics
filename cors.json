@@ -1,9 +1,10 @@
 [
-  {
-    "AllowedOrigin": ["*"],
-    "AllowedMethod": ["GET"],
-    "AllowedHeader": ["*"],
-    "ExposeHeader": [],
-    "MaxAgeSeconds": 3000
-  }
-]
+    {
+      "AllowedOrigin": ["*"],
+      "AllowedMethod": ["GET", "POST"],
+      "AllowedHeader": ["*"],
+      "ExposeHeader": [],
+      "MaxAgeSeconds": 3000
+    }
+  ]
+  

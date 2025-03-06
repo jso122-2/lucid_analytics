@@ -6,8 +6,8 @@ from blueprints.media import media_bp
 from blueprints.about import about_bp
 from blueprints.skeleton import skeleton_bp
 from utils.utility_worker import utility_worker, run_in_background
-from flask import jsonify
-from utils.tasks import load_hand_models  # Correct import
+# Import the synchronous hand models loader
+from utils.hand_models import load_hand_models_sync
 
 app = Flask(__name__, static_folder="static", template_folder="templates", static_url_path="/static")
 
@@ -27,12 +27,33 @@ def index():
 
 @app.context_processor
 def inject_minio_url():
-    return dict(minio_base_url=os.environ.get("MINIO_BASE_URL", "https://lucidanalytics-production.up.railway.app/marketing.models/models/"))
+    return dict(
+        minio_base_url=os.environ.get(
+            "MINIO_BASE_URL",
+            "https://lucidanalytics-production.up.railway.app/marketing.models/models/"
+        )
+    )
 
-@app.route('/celery-task/load_hand_models', methods=['POST'])
-def celery_load_hand_models():
-    task = load_hand_models.delay()
-    return jsonify(task_id=task.id)
+# Workaround for before_first_request: load hand models once on the first request.
+@app.before_request
+def load_hand_models_once():
+    if not app.config.get("HAND_MODELS_LOADED", False):
+        try:
+            # Synchronously load the hand models using the utility function.
+            app.config['HAND_MODELS'] = load_hand_models_sync()
+            app.config["HAND_MODELS_LOADED"] = True
+            app.logger.info("Hand models loaded successfully.")
+        except Exception as e:
+            app.logger.error("Failed to load hand models on startup: %s", e)
+            app.config['HAND_MODELS'] = {}
+
+@app.route('/hand-models', methods=['GET'])
+def get_hand_models():
+    """
+    Return the hand model URLs loaded synchronously at startup.
+    """
+    models = app.config.get('HAND_MODELS', {})
+    return jsonify(models)
 
 @app.route('/proxy/<path:object_key>')
 def proxy_object(object_key):
@@ -50,6 +71,7 @@ def proxy_object(object_key):
 
 @app.route('/long_task')
 def long_task():
+    # Replace 'your_heavy_function', 'param1', and 'param2' with actual values or remove this route if unused.
     utility_worker.add_task(your_heavy_function, param1, param2)
     return "Task is running in the background!"
 
