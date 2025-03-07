@@ -23,15 +23,7 @@
     <!-- Removed auto dark mode toggle script for permanent dark mode -->
   </head>
   <body class="dark-mode">
-    <!-- Sidebar Menu -->
-    <div id="sidebar">
-      <ul class="sidebar-menu">
-        <li class="sidebar-item">
-          <button id="sidebar-dark-mode-toggle" class="sidebar-toggle">&#9790;</button>
-          <span class="sidebar-label">Dark Mode</span>
-        </li>
-      </ul>
-    </div>
+    <!-- Sidebar removed as requested -->
     
     <script>
       window.MINIO_BASE_URL = "{{ minio_base_url }}";
@@ -46,7 +38,7 @@
     <div id="webgl-container" style="background-color: transparent;"></div>
 
     <!-- Main Content Area -->
-    <div class="content">
+    <div class="content" style="background-color: #121212; color: #e0e0e0;">
       {% block content %}{% endblock %}
     </div>
 

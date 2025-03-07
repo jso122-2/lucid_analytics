@@ -265,3 +265,29 @@
 2025-03-06 15:08:49,871 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
 2025-03-06 15:08:49,877 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=J6ecYDoWvuhV2Pqt%2FATX9jAbfvI%3D&Expires=1741237729
 2025-03-06 15:08:58,458 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
+2025-03-06 15:20:17,346 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
+2025-03-06 15:20:17,569 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=Sc%2B1GhiqF%2BzvRldfmBgUnhI8cAk%3D&Expires=1741238417
+2025-03-06 15:20:17,569 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
+2025-03-06 15:20:17,574 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=x%2FsCNhGFJkEAJdiJqw8cHO3fwXE%3D&Expires=1741238417
+2025-03-06 15:21:26,867 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
+2025-03-06 15:21:27,079 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=zIovAcGI7Ce%2Fpd%2FXJyfNyq8HE9M%3D&Expires=1741238487
+2025-03-06 15:21:27,080 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
+2025-03-06 15:21:27,085 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=x1ngIGslK26HT2trs8izxoThBBM%3D&Expires=1741238487
+2025-03-05 23:21:55,497 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: http://minio:9000, MINIO_USE_SSL: false
+2025-03-05 23:21:59,503 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: http://minio:9000, MINIO_USE_SSL: false
+2025-03-05 23:22:00,837 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: http://minio:9000, MINIO_USE_SSL: false
+2025-03-05 23:22:01,792 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: http://minio:9000, MINIO_USE_SSL: false
+2025-03-05 23:22:03,208 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: http://minio:9000, MINIO_USE_SSL: false
+2025-03-05 23:22:04,180 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: http://minio:9000, MINIO_USE_SSL: false
+2025-03-06 15:26:09,076 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
+2025-03-06 15:26:09,362 - my_app - INFO - Generated presigned URL for skeleton_hand.glb: http://minio:9000/marketing.models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=KjZUqJ1wrb4aSYyFtynQSyLDkh0%3D&Expires=1741238769
+2025-03-06 15:26:09,363 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
+2025-03-06 15:26:09,368 - my_app - INFO - Generated presigned URL for flesh_hand.glb: http://minio:9000/marketing.models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=8FqF%2F5s1G%2F2lLDv64qv1G8zmBf4%3D&Expires=1741238769
+2025-03-05 23:26:38,406 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
+2025-03-05 23:26:38,614 - my_app - INFO - Downloaded models/churn_model_20250225_175647.pkl from MinIO to temporary file /tmp/tmp4d4jp6_a.
+2025-03-05 23:26:38,615 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: minio:9000, MINIO_USE_SSL: false
+2025-03-05 23:26:38,632 - my_app - INFO - Downloaded models/minmax_scaler.pkl from MinIO to temporary file /tmp/tmpapkiudg_.
+2025-03-06 23:49:19,692 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: lucidanalytics-production.up.railway.app, MINIO_USE_SSL: true
+2025-03-06 23:49:20,237 - my_app - INFO - Generated presigned URL for models/skeleton_hand.glb: https://lucidanalytics-production.up.railway.app/marketing.models/models/skeleton_hand.glb?AWSAccessKeyId=minioadmin&Signature=cTF4bR923xlQckl7WUmENqq0v4M%3D&Expires=1741326560
+2025-03-06 23:49:20,238 - my_app - INFO - [DEBUG] MINIO_ENDPOINT: lucidanalytics-production.up.railway.app, MINIO_USE_SSL: true
+2025-03-06 23:49:20,245 - my_app - INFO - Generated presigned URL for models/flesh_hand.glb: https://lucidanalytics-production.up.railway.app/marketing.models/models/flesh_hand.glb?AWSAccessKeyId=minioadmin&Signature=1%2Fx1xiWE%2B37RlaBr5ut%2B%2BuU3eXY%3D&Expires=1741326560

@@ -4,6 +4,7 @@ services:
   web:
     build: .
     container_name: lucid_analytics_web
+    restart: always
     ports:
       - "5000:5000"
     depends_on:
@@ -34,6 +35,7 @@ services:
   worker:
     build: .
     container_name: lucid_analytics_worker
+    restart: always
     working_dir: /app
     command: celery -A utils.tasks.celery_app worker --loglevel=info
     depends_on:
@@ -49,7 +51,8 @@ services:
       NPS_SCALER_PATH: "/app/models/nps_scaler.pkl"
       MEDIA_MODEL_PATH: "/app/models/media_model_20250219_002020.pkl"
       MEDIA_SCALER_PATH: "/app/models/standard_scaler.pkl"
-      MINIO_ENDPOINT: "http://minio:9000"
+      MINIO_ENDPOINT: "minio:9000"
+      MINIO_USE_SSL: "false"
       MINIO_ACCESS_KEY: "minioadmin"
       MINIO_SECRET_KEY: "minioadmin"
       MINIO_BUCKET: "marketing.models"
@@ -65,6 +68,7 @@ services:
   minio:
     image: minio/minio
     container_name: minio
+    restart: always
     environment:
       MINIO_ENDPOINT: "lucidanalytics-production.up.railway.app"
       MINIO_ACCESS_KEY: "minioadmin"
@@ -84,6 +88,7 @@ services:
   redis:
     image: redis:alpine
     container_name: redis
+    restart: always
     ports:
       - "6379:6379"
     networks:

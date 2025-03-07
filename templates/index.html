@@ -191,13 +191,14 @@
         margin: 0 auto;
       }
       .card {
-        background: #808080;  /* Global grey */
+        background: #1e1e1e;  /* Dark background matching global dark mode */
         border-radius: 10px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         padding: 25px;
         transition: transform 0.3s ease;
-        border: 1px solid #000000;
-      }
+        border: 1px solid #444;  /* Subtle dark border */
+        }
+
       .card:hover {
         transform: translateY(-8px);
       }
@@ -360,6 +361,8 @@
     </style>
   </head>
   <body>
+    <body class="dark-mode">
+
        <!-- Global Sidebar Menu -->
        <div id="sidebar">
         <ul class="sidebar-menu">
@@ -579,6 +582,6 @@
     </script>
       
     <!-- Use the bundled JavaScript output -->
-    <script type="module" src="{{ url_for('static', filename='dist/assets/main-DmdgG6cI.js')}}"></script>
+    <script type="module" src="{{ url_for('static', filename='dist/assets/main-B0zj8XHT.js')}}"></script>
 </body>
 </html>

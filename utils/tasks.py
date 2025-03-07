@@ -93,17 +93,22 @@ def get_churn_survival_artifacts():
 @celery_app.task
 def load_hand_models():
     """
-    Fetch skeleton and flesh hand models from MinIO and return their presigned URLs.
+    Return public URLs for skeleton and flesh hand models.
     """
     try:
-        skeleton_model_url = get_presigned_url("skeleton_hand.glb")
-        flesh_model_url = get_presigned_url("flesh_hand.glb")
+        base_url = os.environ.get(
+            "MINIO_BASE_URL",
+            "https://lucidanalytics-production.up.railway.app/marketing.models/models/"
+        )
+        skeleton_model_url = f"{base_url}skeleton_hand.glb"
+        flesh_model_url = f"{base_url}flesh_hand.glb"
         return {
             "skeleton_model": skeleton_model_url,
             "flesh_model": flesh_model_url
         }
     except Exception as e:
         return {"error": str(e)}
+
 
 
 @celery_app.task

@@ -6,10 +6,6 @@ import { OrbitControls } from "./OrbitControls.js";
 import { gsap } from "https://cdn.skypack.dev/gsap";
 import anime from "https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js";
 
-// Use the injected MINIO_BASE_URL (assumed to be set in base.html)
-const minioBase = window.MINIO_BASE_URL;
-console.log("MINIO_BASE_URL from window:", minioBase);
-
 // Global variables.
 let scene, renderer, controls;
 let cameraSkeleton, cameraFlesh;
@@ -19,10 +15,16 @@ let isSequenceActive = false;
 let currentArticleIndex = 0;
 let currentModel = "skeleton"; // "skeleton" or "flesh"
 
-// Full explanatory text paragraphs.
+// Model paths from static directory
+const MODEL_PATHS = {
+  skeleton_model: "/static/utils/models/skeleton_hand.glb",
+  flesh_model: "/static/utils/models/flesh_hand.glb"
+};
+
+// Explanatory texts.
 const explanatoryTexts = [
   "Data alone is like the bones of a skeleton—structured, essential, but incomplete. Just as bones provide the foundation for movement and strength, raw data offers the fundamental building blocks for insights and decisions. Yet, without analysis, interpretation, and context, data remains inert, waiting for life to be breathed into it.",
-  "Enter transformation. When we apply sophisticated machine learning models to this skeletal structure, it’s as if we're layering muscle, skin, and flesh onto bare bones. Each algorithm, each statistical technique, adds detail and vitality, transforming raw information into meaningful, actionable insights—bringing our skeleton vividly to life.",
+  "Enter transformation. When we apply sophisticated machine learning models to this skeletal structure, it's as if we're layering muscle, skin, and flesh onto bare bones. Each algorithm, each statistical technique, adds detail and vitality, transforming raw information into meaningful, actionable insights—bringing our skeleton vividly to life.",
   "Hit the Transform button and watch as we shift from a stark frame of possibilities to a living, breathing body of knowledge, powered by intelligence, ready to engage and respond dynamically to the world around it."
 ];
 
@@ -31,6 +33,8 @@ const container = document.getElementById("webgl-container");
 container.style.position = "relative";
 container.style.width = "100%";
 container.style.height = "100vh";
+// Make container transparent
+container.style.backgroundColor = "transparent";
 
 //
 // Helper Functions
@@ -73,77 +77,48 @@ function crossFadeModelOpacity(model, startOpacity, endOpacity, duration, onComp
 }
 
 //
-// Async Model Loader (Promise wrapper for GLTFLoader)
+// Direct Hand Model Loading Logic
 //
-function loadModel(url) {
-  return new Promise((resolve, reject) => {
-    const loader = new GLTFLoader();
-    loader.load(
-      url,
-      (gltf) => resolve(gltf),
-      undefined,
-      (error) => reject(error)
-    );
-  });
-}
+function loadHandAssets() {
+  const loader = new GLTFLoader();
 
-// Replace the old Celery-based fetch function with this:
-async function fetchHandModels() {
-    try {
-      let response = await fetch("/hand-models", { method: "GET" });
-      let models = await response.json();
-      console.log("✅ Hand models loaded:", models);
-      return models;
-    } catch (error) {
-      console.error("❌ Error loading hand models:", error);
-      return null;
-    }
-  }
-  
-  async function loadHandModels() {
-    const models = await fetchHandModels();
-    if (!models || models.error) {
-      console.error("❌ Failed to fetch hand models. Using fallback proxy URLs.");
-      return {
-        skeleton_model: window.location.origin + "/proxy/skeleton_hand.glb",
-        flesh_model: window.location.origin + "/proxy/flesh_hand.glb"
-      };
-    }
-    return models;
-  }
-  
+  // Load Skeleton Hand.
+  loader.load(
+    MODEL_PATHS.skeleton_model,
+    (gltf) => {
+      skeletonHand = gltf.scene;
+      skeletonHand.position.set(-0.3, -1, 0);
+      skeletonHand.rotation.set(-Math.PI / 2, 0, 0);
+      skeletonHand.scale.set(1.2, 1.2, 1.2);
+      setModelMaterialsTransparent(skeletonHand);
+      skeletonHand.visible = true;
+      scene.add(skeletonHand);
+      console.log("✅ Skeleton hand loaded from static directory.");
+    },
+    (xhr) => {
+      console.log(`Skeleton hand loading: ${(xhr.loaded / xhr.total) * 100}% loaded`);
+    },
+    (error) => console.error("❌ Error loading skeleton hand:", error)
+  );
 
-async function loadHandAssets() {
-  const models = await loadHandModels();
-  if (!models) return;
-
-  try {
-    const gltfSkeleton = await loadModel(models.skeleton_model);
-    skeletonHand = gltfSkeleton.scene;
-    skeletonHand.position.set(-0.3, -1, 0);
-    skeletonHand.rotation.set(-Math.PI / 2, 0, 0);
-    skeletonHand.scale.set(1.2, 1.2, 1.2);
-    setModelMaterialsTransparent(skeletonHand);
-    skeletonHand.visible = true;
-    scene.add(skeletonHand);
-    console.log("✅ Skeleton hand dynamically loaded.");
-  } catch (error) {
-    console.error("❌ Error loading skeleton hand:", error);
-  }
-
-  try {
-    const gltfFlesh = await loadModel(models.flesh_model);
-    fleshHand = gltfFlesh.scene;
-    fleshHand.position.set(0, -1, 0);
-    fleshHand.scale.set(2, 2, 2);
-    fleshHand.rotation.set(-1.0472, -0.8727, 0);
-    setModelMaterialsTransparent(fleshHand);
-    fleshHand.visible = false;
-    scene.add(fleshHand);
-    console.log("✅ Flesh hand dynamically loaded.");
-  } catch (error) {
-    console.error("❌ Error loading flesh hand:", error);
-  }
+  // Load Flesh Hand.
+  loader.load(
+    MODEL_PATHS.flesh_model,
+    (gltf) => {
+      fleshHand = gltf.scene;
+      fleshHand.position.set(0, -1, 0);
+      fleshHand.scale.set(2, 2, 2);
+      fleshHand.rotation.set(-1.0472, -0.8727, 0);
+      setModelMaterialsTransparent(fleshHand);
+      fleshHand.visible = false;
+      scene.add(fleshHand);
+      console.log("✅ Flesh hand loaded from static directory.");
+    },
+    (xhr) => {
+      console.log(`Flesh hand loading: ${(xhr.loaded / xhr.total) * 100}% loaded`);
+    },
+    (error) => console.error("❌ Error loading flesh hand:", error)
+  );
 }
 
 //
@@ -153,8 +128,8 @@ function showArticle(index, onComplete) {
   const text = explanatoryTexts[index];
   articleContainer.innerHTML = "";
   articleContainer.style.opacity = 1;
-  const typingSpeedCharsPerSecond = 30;
-  const typingDuration = text.length / typingSpeedCharsPerSecond;
+  const typingSpeed = 30; // characters per second
+  const typingDuration = text.length / typingSpeed;
   let progressObj = { progress: 0 };
   gsap.to(progressObj, {
     duration: typingDuration,
@@ -274,7 +249,9 @@ function init() {
   scene = new THREE.Scene();
   const aspect = container.clientWidth / container.clientHeight;
 
-  // Skeleton camera (Orthographic)
+  document.getElementById("transform-btn").addEventListener("click", onTransformClick);
+
+  // Set up the skeleton (Orthographic) camera.
   cameraSkeleton = new THREE.OrthographicCamera(
     (-10 * aspect) / 2,
     (10 * aspect) / 2,
@@ -288,19 +265,22 @@ function init() {
   cameraSkeleton.updateProjectionMatrix();
   cameraSkeleton.lookAt(0, -1, 0);
 
-  // Flesh camera (Perspective)
+  // Set up the flesh (Perspective) camera.
   cameraFlesh = new THREE.PerspectiveCamera(50, aspect, 0.1, 1000);
   cameraFlesh.position.set(6.044, 5.594, 3.16);
   cameraFlesh.lookAt(0, -1, 0);
 
-  // Renderer
-  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  // Renderer with alpha for transparency.
+  renderer = new THREE.WebGLRenderer({ 
+    antialias: true, 
+    alpha: true 
+  });
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.setClearColor(0x000000, 0);
+  renderer.setClearColor(0x000000, 0); // Fully transparent background
   container.appendChild(renderer.domElement);
 
-  // OrbitControls for the skeleton camera
+  // Set up OrbitControls for the skeleton camera with dark colors instead of white.
   const orbitControllerDiv = document.createElement("div");
   orbitControllerDiv.id = "orbit-controller";
   Object.assign(orbitControllerDiv.style, {
@@ -309,8 +289,8 @@ function init() {
     left: "10px",
     width: "150px",
     height: "150px",
-    background: "#fff",
-    border: "2px solid #000",
+    background: "#333333", // Dark gray instead of white
+    border: "2px solid #555555", // Darker border
     borderRadius: "50%",
     zIndex: "10001",
     cursor: "grab"
@@ -325,7 +305,7 @@ function init() {
     bottom: "170px",
     left: "10px",
     fontSize: "1rem",
-    color: "#fff",
+    color: "#cccccc", // Light gray instead of white
     fontWeight: "bold",
     zIndex: "10002"
   });
@@ -340,17 +320,17 @@ function init() {
   controls.target.set(0, -1, 0);
   controls.update();
 
-  // Lights
-  const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+  // Lights.
+  const ambientLight = new THREE.AmbientLight(0xcccccc, 1.5); // Slightly dimmer light
   scene.add(ambientLight);
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+  const directionalLight = new THREE.DirectionalLight(0xcccccc, 2); // Slightly dimmer light
   directionalLight.position.set(2, 2, 2);
   scene.add(directionalLight);
-  const pointLight = new THREE.PointLight(0xffffff, 1.5);
+  const pointLight = new THREE.PointLight(0xcccccc, 1.5); // Slightly dimmer light
   pointLight.position.set(5, 5, 5);
   scene.add(pointLight);
 
-  // Create an article container for transform text.
+  // Create an article container for typed text.
   articleContainer = document.createElement("div");
   articleContainer.id = "article-container";
   Object.assign(articleContainer.style, {
@@ -359,21 +339,22 @@ function init() {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "60%",
-    color: "#fff",
+    color: "#cccccc", // Light gray instead of white
     fontSize: "2rem",
     textAlign: "center",
     zIndex: "10000",
     pointerEvents: "none",
-    opacity: 0
+    opacity: 0,
+    textShadow: "1px 1px 3px rgba(0, 0, 0, 0.7)" // Add shadow for better readability on transparent background
   });
   container.appendChild(articleContainer);
 
-  // Load hand models asynchronously (via Celery task or fallback).
+  // Load hand models directly.
   loadHandAssets();
 
-  // Optionally load particles.js if needed.
+  // Optionally load particles.js configuration.
   if (typeof particlesJS !== "undefined") {
-    particlesJS.load("particles-js", "/static/assets/particlesjs-config.json", function() {
+    particlesJS.load("particles-js", "/static/utils/particlesjs-config.json", function() {
       console.log("particles.js configuration loaded");
     });
   } else {
