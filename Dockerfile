@@ -1,6 +1,6 @@
 FROM python:3.9-slim
 
-# Update package lists and install Git and Git LFS along with other dependencies.
+# Install required packages.
 RUN apt-get update && apt-get install -y --no-install-recommends \
       git \
       git-lfs \
@@ -13,13 +13,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-COPY requirements.txt .
+# Clone the repository.
+RUN git clone https://github.com/jso122-2/lucid_analytics.git . && git lfs pull
+
+# Install Python dependencies.
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-
-# Pull Git LFS files
-RUN git lfs pull
 
 EXPOSE 5000
 CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:5000"]
