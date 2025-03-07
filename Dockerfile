@@ -1,33 +1,27 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim as base
+# Use an official Python runtime as a parent image.
+FROM python:3.12-slim
 
-# Prevent Python from writing .pyc files and buffering stdout/stderr
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+# Install system dependencies including git-lfs.
+RUN apt-get update && \
+    apt-get install -y git-lfs && \
+    git lfs install && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    gcc \
-    libpq-dev \
-    curl \
- && rm -rf /var/lib/apt/lists/*
-
-# Set the working directory
+# Set the working directory.
 WORKDIR /app
 
-# Copy requirements file and install dependencies
-COPY requirements.txt /app/
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Copy the requirements file and install Python dependencies.
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the project code into the container
-COPY . /app
+# Copy the rest of the repository into the container.
+COPY . .
 
-# Expose port 5000 for the Flask app
+# Pull the Git LFS files (this downloads the full binary files, not just the pointers)
+RUN git lfs pull
+
+# Expose port 5000 (or your app's port).
 EXPOSE 5000
 
-# Default command to run your Flask app using Gunicorn.
-# For Celery workers, Render can override the CMD with:
-# celery -A utils.tasks.celery_app worker --loglevel=info
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+# Set the default command to run your Flask app (adjust as needed, e.g., using gunicorn).
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:5000"]
