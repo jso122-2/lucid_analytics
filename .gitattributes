@@ -3,3 +3,4 @@
 *.glb filter=lfs diff=lfs merge=lfs -text
 C:/Users/Admin/OneDrive/Desktop/scripts/final[[:space:]]webapp filter=lfs diff=lfs merge=lfs -text
 .glb filter=lfs diff=lfs merge=lfs -text
+static/utils/models/skeleton_hand.glb filter=lfs diff=lfs merge=lfs -text
