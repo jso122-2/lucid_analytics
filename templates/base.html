@@ -8,6 +8,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet" />
     <!-- Meta Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Favicon (using PNG instead of SVG) -->
+    <link rel="icon" href="{{ url_for('static', filename='assets/logo.svg') }}?v=1" type="image/svg+xml">
+    <link rel="icon" href="/static/assets/logo.svg" type="image/svg+xml">
+    <link rel="shortcut icon" href="/static/assets/logo.svg" type="image/svg+xml">
+
     <!-- Global CSS Files -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/skeleton.css') }}" />

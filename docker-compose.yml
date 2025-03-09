@@ -25,12 +25,14 @@ services:
       MINIO_ENDPOINT: "lucidanalytics-production.up.railway.app"
       MINIO_USE_SSL: "true"
       MINIO_OBJECT_PREFIX: "models/"
-    volumes:
-      - .:/app
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
+    # Code is embedded in the image; removed volume mounts
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   worker:
     build: .
@@ -42,8 +44,9 @@ services:
       - minio
       - redis
     environment:
-      CELERY_BROKER_URL: "redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0"
-      CELERY_RESULT_BACKEND: "redis://default:KBXiFjDBNmVsKuwvHzgBJqOKuQsAsBUI@gondola.proxy.rlwy.net:32201/0"
+      # Use the same Redis connection as the web service
+      CELERY_BROKER_URL: "redis://redis:6379/0"
+      CELERY_RESULT_BACKEND: "redis://redis:6379/0"
       TZ: "EST"
       CHURN_MODEL_PATH: "/app/models/churn_model_20250220_182726.pkl"
       CHURN_SCALER_PATH: "/app/models/minmax_scaler.pkl"
@@ -58,12 +61,14 @@ services:
       MINIO_BUCKET: "marketing.models"
       MINIO_OBJECT_PREFIX: "models/"
       SITE_NAME: "Lucid Analytics"
-    volumes:
-      - .:/app
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
+    # Code is embedded in the image; removed volume mounts
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "celery", "-A", "utils.tasks.celery_app", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   minio:
     image: minio/minio
@@ -84,6 +89,11 @@ services:
       - minio-data:/data
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/ready"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   redis:
     image: redis:alpine
@@ -93,6 +103,11 @@ services:
       - "6379:6379"
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   minio-data:
