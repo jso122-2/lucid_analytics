@@ -14,5 +14,5 @@ RUN pip install --upgrade pip \
 # Ensure local modules are importable
 ENV PYTHONPATH=/app
 
-# Default Celery worker command
-CMD ["celery", "-A", "utils.tasks.celery_app", "worker", "--loglevel=info"]
+# Default command: start Celery worker
+CMD ["celery", "-A", "utils.tasks:celery_app", "worker", "--loglevel=info"]
