@@ -1,17 +1,18 @@
+# Base image
 FROM python:3.9-slim
 
-# Set working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Copy entire project into the container
+# Copy project files
 COPY . /app
 
-# Install dependencies
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+# Install Python dependencies
+RUN pip install --upgrade pip \
+    && pip install -r requirements.txt
 
-# Ensure Python can import local modules
+# Ensure local modules are importable
 ENV PYTHONPATH=/app
 
-# Default command: start Celery worker
+# Default Celery worker command
 CMD ["celery", "-A", "utils.tasks.celery_app", "worker", "--loglevel=info"]
