@@ -25,7 +25,6 @@ services:
       MINIO_ENDPOINT: "lucidanalytics-production.up.railway.app"
       MINIO_USE_SSL: "true"
       MINIO_OBJECT_PREFIX: "models/"
-    # Code is embedded in the image; removed volume mounts
     networks:
       - app-network
     healthcheck:
@@ -44,7 +43,6 @@ services:
       - minio
       - redis
     environment:
-      # Use the same Redis connection as the web service
       CELERY_BROKER_URL: "redis://redis:6379/0"
       CELERY_RESULT_BACKEND: "redis://redis:6379/0"
       TZ: "EST"
@@ -61,7 +59,6 @@ services:
       MINIO_BUCKET: "marketing.models"
       MINIO_OBJECT_PREFIX: "models/"
       SITE_NAME: "Lucid Analytics"
-    # Code is embedded in the image; removed volume mounts
     networks:
       - app-network
     healthcheck:

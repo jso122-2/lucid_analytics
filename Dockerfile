@@ -1,23 +1,17 @@
 FROM python:3.9-slim
 
-# Install required packages.
-RUN apt-get update && apt-get install -y --no-install-recommends \
-      git \
-      git-lfs \
-      build-essential \
-      gcc \
-      libpq-dev \
-      curl \
-   && git lfs install \
-   && rm -rf /var/lib/apt/lists/*
-
+# Set working directory inside the container
 WORKDIR /app
 
-# Clone the repository.
-RUN git clone https://github.com/jso122-2/lucid_analytics.git . && git lfs pull
+# Copy entire project into the container
+COPY . /app
 
-# Install Python dependencies.
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+# Install dependencies
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
 
-EXPOSE 5000
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:5000"]
+# Ensure Python can import local modules
+ENV PYTHONPATH=/app
+
+# Default command: start Celery worker
+CMD ["celery", "-A", "utils.tasks.celery_app", "worker", "--loglevel=info"]
